@@ -1,0 +1,18 @@
+<resources>
+    <color name="primary_light">#ffcdd2</color>
+    <color name="primary">#f44336</color>
+    <color name="primary_dark">#d32f2f</color>
+
+    <color name="accent">#ffdb4c</color>
+
+    <color name="black_12">#1e000000</color>
+    <color name="black_26">#42000000</color>
+    <color name="black_54">#89000000</color>
+    <color name="black_87">#dd000000</color>
+    <color name="black_100">#ff000000</color>
+
+    <color name="white_12">#1effffff</color>
+    <color name="white_30">#4cffffff</color>
+    <color name="white_70">#b2ffffff</color>
+    <color name="white_100">#ffffffff</color>
+</resources>
