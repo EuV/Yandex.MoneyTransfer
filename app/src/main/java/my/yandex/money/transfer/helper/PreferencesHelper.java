@@ -24,7 +24,7 @@ public final class PreferencesHelper {
 
 
     public static void markFirstVisit() {
-        editPreferences().putBoolean(KEY_FIRST_VISIT, true).apply();
+        editPreferences().putBoolean(KEY_FIRST_VISIT, false).apply();
         Log.d(TAG, "The first visit has been marked");
     }
 
