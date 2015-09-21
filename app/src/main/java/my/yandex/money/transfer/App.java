@@ -1,0 +1,19 @@
+package my.yandex.money.transfer;
+
+import android.app.Application;
+import android.content.Context;
+import my.yandex.money.transfer.helper.PreferencesHelper;
+
+public class App extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        init();
+    }
+
+    private void init() {
+        Context context = getApplicationContext();
+        PreferencesHelper.init(context);
+    }
+}
