@@ -5,19 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 public class LogActivity extends AppCompatActivity {
-    private String TAG;
+    private final String TAG = getClass().getName();
 
     protected void log(String msg) {
         if (BuildConfig.DEBUG) {
-            Log.d(getTag(), msg);
+            Log.d(TAG, msg);
         }
-    }
-
-    protected String getTag() {
-        if (TAG == null) {
-            TAG = this.getClass().getName();
-        }
-        return TAG;
     }
 
     @Override
