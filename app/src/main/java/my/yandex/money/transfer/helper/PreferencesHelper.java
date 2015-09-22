@@ -13,8 +13,8 @@ public final class PreferencesHelper {
 
     private PreferencesHelper() { /* */ }
 
-    public static void init(Context a) {
-        context = a;
+    public static void init(Context c) {
+        context = c;
     }
 
 

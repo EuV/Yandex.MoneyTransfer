@@ -2,6 +2,7 @@ package my.yandex.money.transfer;
 
 import android.app.Application;
 import android.content.Context;
+import my.yandex.money.transfer.helper.NotificationHelper;
 import my.yandex.money.transfer.helper.PreferencesHelper;
 
 public class App extends Application {
@@ -15,5 +16,6 @@ public class App extends Application {
     private void init() {
         Context context = getApplicationContext();
         PreferencesHelper.init(context);
+        NotificationHelper.init(context);
     }
 }
