@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +20,17 @@ import my.yandex.money.transfer.helper.ConnectionHelper;
 import my.yandex.money.transfer.helper.NotificationHelper;
 import my.yandex.money.transfer.helper.PreferencesHelper;
 
-import static android.view.KeyEvent.ACTION_DOWN;
-import static android.view.KeyEvent.KEYCODE_BACK;
-
 public class SignInActivity extends LogActivity {
     private static final String CLIENT_ID = "DE70875A6C42ACAA9BB53B5B56F8A7D1C686F8975E0DA5B7CE2C8B2876BAF214";
     private static final String REDIRECT_URI = "http://yandex.money-transfer.ru/process";
     private static final String AUTHORIZE_URI = "https://m.money.yandex.ru/oauth/authorize";
 
+    private static final int TAP_TO_EXIT_INTERVAL = 2000;
+
     private ProgressBar progressBar;
     private WebView webView;
+
+    private long whenBackButtonWasPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +79,19 @@ public class SignInActivity extends LogActivity {
 
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((event.getAction() == ACTION_DOWN) && (keyCode == KEYCODE_BACK) && webView.canGoBack()) {
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
             webView.goBack();
-            return true;
+            return;
+        } else {
+            final long now = System.currentTimeMillis();
+            if (now > whenBackButtonWasPressed + TAP_TO_EXIT_INTERVAL) {
+                NotificationHelper.showToUser(R.string.tap_to_exit);
+                whenBackButtonWasPressed = now;
+                return;
+            }
         }
-
-        // TODO: Press one more time to exit
-        return super.onKeyDown(keyCode, event);
+        super.onBackPressed();
     }
 
 

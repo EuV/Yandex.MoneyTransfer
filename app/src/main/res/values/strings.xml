@@ -5,4 +5,5 @@
     <string name="about">The application allows you to transfer money between Yandex.Money wallets.\nWhen authorization is done you will be asked to create a PIN-code you will need to enter every time you open the application. This is necessary to ensure the safety of your wallet.</string>
     <string name="no_network_connection">No network connection</string>
     <string name="refresh">Refresh</string>
+    <string name="tap_to_exit">Press \"Back\" again to exit</string>
 </resources>
