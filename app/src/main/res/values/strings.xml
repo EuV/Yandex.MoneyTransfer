@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Yandex.Money Transfer</string>
     <string name="greeting">Welcome!</string>
     <string name="about">The application allows you to transfer money between Yandex.Money wallets.\nWhen authorization is done you will be asked to create a PIN-code you will need to enter every time you open the application. This is necessary to ensure the safety of your wallet.</string>
+    <string name="no_network_connection">No network connection</string>
 </resources>

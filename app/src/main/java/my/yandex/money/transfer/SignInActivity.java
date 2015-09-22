@@ -15,6 +15,8 @@ import com.yandex.money.api.model.Scope;
 import com.yandex.money.api.net.DefaultApiClient;
 import com.yandex.money.api.net.OAuth2Authorization.Params;
 import com.yandex.money.api.net.OAuth2Session;
+import my.yandex.money.transfer.helper.ConnectionHelper;
+import my.yandex.money.transfer.helper.NotificationHelper;
 import my.yandex.money.transfer.helper.PreferencesHelper;
 
 import static android.view.KeyEvent.ACTION_DOWN;
@@ -79,8 +81,11 @@ public class SignInActivity extends LogActivity {
 
 
     private void authorizeInWebView() {
+        if (!ConnectionHelper.hasConnection()) {
+            NotificationHelper.showToUser(R.string.no_network_connection);
+            return;
+        }
 
-        // TODO: check internet connection
         OAuth2Session session = new OAuth2Session(new DefaultApiClient(CLIENT_ID));
         session.setDebugLogging(BuildConfig.DEBUG);
 
