@@ -6,6 +6,8 @@ import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -49,6 +51,23 @@ public class SignInActivity extends LogActivity {
         }
 
         signIn();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sign_in_activity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_refresh) {
+            authorizeInWebView();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -106,7 +125,6 @@ public class SignInActivity extends LogActivity {
     private void setupViews() {
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        // TODO: Refresh button
         webView = (WebView) findViewById(R.id.web_view);
         webView.getSettings().setSavePassword(false);
         webView.getSettings().setJavaScriptEnabled(true);
