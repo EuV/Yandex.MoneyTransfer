@@ -21,9 +21,9 @@ import com.yandex.money.api.net.OAuth2Session;
 import com.yandex.money.api.net.OnResponseReady;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import my.yandex.money.transfer.helper.ConnectionHelper;
-import my.yandex.money.transfer.helper.NotificationHelper;
-import my.yandex.money.transfer.helper.PreferencesHelper;
+import my.yandex.money.transfer.utils.Connections;
+import my.yandex.money.transfer.utils.Notifications;
+import my.yandex.money.transfer.utils.Preferences;
 
 public class SignInActivity extends LogActivity {
     private static final String CLIENT_ID = "DE70875A6C42ACAA9BB53B5B56F8A7D1C686F8975E0DA5B7CE2C8B2876BAF214";
@@ -50,8 +50,8 @@ public class SignInActivity extends LogActivity {
             return;
         }
 
-        if (PreferencesHelper.isFirstVisit()) {
-            PreferencesHelper.markFirstVisit();
+        if (Preferences.isFirstVisit()) {
+            Preferences.markFirstVisit();
             showGreetingPopup();
             return;
         }
@@ -92,7 +92,7 @@ public class SignInActivity extends LogActivity {
         } else {
             final long now = System.currentTimeMillis();
             if (now > whenBackButtonWasPressed + TAP_TO_EXIT_INTERVAL) {
-                NotificationHelper.showToUser(R.string.tap_to_exit);
+                Notifications.showToUser(R.string.tap_to_exit);
                 whenBackButtonWasPressed = now;
                 return;
             }
@@ -102,7 +102,7 @@ public class SignInActivity extends LogActivity {
 
 
     private void signIn() {
-        if (PreferencesHelper.hasEncryptedAccessToken()) {
+        if (Preferences.hasEncryptedAccessToken()) {
             // TODO: Redirect to PIN Activity
         } else {
             authorizeInWebView();
@@ -111,8 +111,8 @@ public class SignInActivity extends LogActivity {
 
 
     private void authorizeInWebView() {
-        if (!ConnectionHelper.hasConnection()) {
-            NotificationHelper.showToUser(R.string.no_network_connection);
+        if (!Connections.hasConnection()) {
+            Notifications.showToUser(R.string.no_network_connection);
             return;
         }
 
@@ -157,12 +157,12 @@ public class SignInActivity extends LogActivity {
                             getAccessToken(response.code);
                         } else {
                             logDebug(response.error);
-                            NotificationHelper.showToUser(R.string.access_denied);
+                            Notifications.showToUser(R.string.access_denied);
                             authorizeInWebView();
                         }
                     } catch (URISyntaxException e) {
                         logError(e.getMessage());
-                        NotificationHelper.showToUser(R.string.error_in_server_response);
+                        Notifications.showToUser(R.string.error_in_server_response);
                     }
                 }
                 return false;
@@ -206,7 +206,7 @@ public class SignInActivity extends LogActivity {
 
 
     private void authorizationFailed() {
-        NotificationHelper.showToUser(R.string.authorization_failed);
+        Notifications.showToUser(R.string.authorization_failed);
     }
 
 
