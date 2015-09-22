@@ -6,4 +6,7 @@
     <string name="no_network_connection">No network connection</string>
     <string name="refresh">Refresh</string>
     <string name="tap_to_exit">Press \"Back\" again to exit</string>
+    <string name="error_in_server_response">An error occurred while processing server response</string>
+    <string name="access_denied">Access denied</string>
+    <string name="authorization_failed">Authorization failed</string>
 </resources>

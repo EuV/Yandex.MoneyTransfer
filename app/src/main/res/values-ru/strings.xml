@@ -6,4 +6,7 @@
     <string name="no_network_connection">Нет подключения к сети</string>
     <string name="refresh">Обновить</string>
     <string name="tap_to_exit">Нажмите \"Назад\" ещё раз для выхода</string>
+    <string name="error_in_server_response">Ошибка при обработке ответа сервера</string>
+    <string name="access_denied">Ошибка доступа</string>
+    <string name="authorization_failed">Авторизация не удалась</string>
 </resources>

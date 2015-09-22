@@ -3,18 +3,33 @@ package my.yandex.money.transfer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import com.yandex.money.api.model.Error;
 
 public class LogActivity extends AppCompatActivity {
     private final String TAG = getClass().getName();
 
     protected void logDebug(String msg) {
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG && msg != null) {
             Log.d(TAG, msg);
         }
     }
 
+    protected void logDebug(Error error) {
+        if (error != null) {
+            logDebug(error.code);
+        }
+    }
+
     protected void logError(String msg) {
-        Log.e(TAG, msg);
+        if (msg != null) {
+            Log.e(TAG, msg);
+        }
+    }
+
+    protected void logError(Error error) {
+        if (error != null) {
+            logError(error.code);
+        }
     }
 
     @Override

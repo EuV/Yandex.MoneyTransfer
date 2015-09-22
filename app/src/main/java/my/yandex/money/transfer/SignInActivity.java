@@ -12,10 +12,15 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import com.yandex.money.api.methods.Token;
 import com.yandex.money.api.model.Scope;
+import com.yandex.money.api.net.AuthorizationCodeResponse;
 import com.yandex.money.api.net.DefaultApiClient;
 import com.yandex.money.api.net.OAuth2Authorization.Params;
 import com.yandex.money.api.net.OAuth2Session;
+import com.yandex.money.api.net.OnResponseReady;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import my.yandex.money.transfer.helper.ConnectionHelper;
 import my.yandex.money.transfer.helper.NotificationHelper;
 import my.yandex.money.transfer.helper.PreferencesHelper;
@@ -27,6 +32,7 @@ public class SignInActivity extends LogActivity {
 
     private static final int TAP_TO_EXIT_INTERVAL = 2000;
 
+    private OAuth2Session session = new OAuth2Session(new DefaultApiClient(CLIENT_ID));
     private ProgressBar progressBar;
     private WebView webView;
 
@@ -110,7 +116,6 @@ public class SignInActivity extends LogActivity {
             return;
         }
 
-        OAuth2Session session = new OAuth2Session(new DefaultApiClient(CLIENT_ID));
         session.setDebugLogging(BuildConfig.DEBUG);
 
         Params postParams = session.createOAuth2Authorization().getAuthorizeParams()
@@ -123,6 +128,7 @@ public class SignInActivity extends LogActivity {
             .addScope(Scope.PAYMENT_P2P);
 
         webView.postUrl(AUTHORIZE_URI, postParams.build());
+        webView.setVisibility(View.VISIBLE);
     }
 
 
@@ -143,9 +149,22 @@ public class SignInActivity extends LogActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-                // TODO: Handle REDIRECT_URI
-                view.loadUrl(url);
+                if (url.contains(REDIRECT_URI)) {
+                    webView.setVisibility(View.INVISIBLE);
+                    try {
+                        AuthorizationCodeResponse response = AuthorizationCodeResponse.parse(url);
+                        if (response.code != null) {
+                            getAccessToken(response.code);
+                        } else {
+                            logDebug(response.error);
+                            NotificationHelper.showToUser(R.string.access_denied);
+                            authorizeInWebView();
+                        }
+                    } catch (URISyntaxException e) {
+                        logError(e.getMessage());
+                        NotificationHelper.showToUser(R.string.error_in_server_response);
+                    }
+                }
                 return false;
             }
         });
@@ -155,6 +174,39 @@ public class SignInActivity extends LogActivity {
                 progressBar.setProgress(progress);
             }
         });
+    }
+
+
+    private void getAccessToken(String authorizationCode) {
+        try {
+            session.enqueue(new Token.Request(authorizationCode, CLIENT_ID, REDIRECT_URI), new OnResponseReady<Token>() {
+
+                @Override
+                public void onFailure(Exception exception) {
+                    logDebug(exception.getMessage());
+                    authorizationFailed();
+                }
+
+                @Override
+                public void onResponse(Token token) {
+                    if (token.accessToken != null) {
+                        session.setAccessToken(token.accessToken);
+                        // TODO: save token, redirect to PIN Activity
+                    } else {
+                        logError(token.error);
+                        authorizationFailed();
+                    }
+                }
+            });
+        } catch (IOException e) {
+            logError(e.getMessage());
+            authorizationFailed();
+        }
+    }
+
+
+    private void authorizationFailed() {
+        NotificationHelper.showToUser(R.string.authorization_failed);
     }
 
 
