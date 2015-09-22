@@ -29,12 +29,18 @@ public final class PreferencesHelper {
     }
 
 
+    public static boolean hasEncryptedAccessToken() {
+        // TODO
+        return false;
+    }
+
+
     private static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
 
-    private static Editor editPreferences () {
+    private static Editor editPreferences() {
         return getPreferences().edit();
     }
 }
