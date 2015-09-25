@@ -9,4 +9,12 @@
     <string name="error_in_server_response">Ошибка при обработке ответа сервера</string>
     <string name="access_denied">Ошибка доступа</string>
     <string name="authorization_failed">Авторизация не удалась</string>
+    <string name="pin_min_length">Введите как минимум %1$d цифры</string>
+    <string name="pin_max_length">Длина PIN-кода не должна превышать %1$d символов</string>
+    <string name="can_not_log_in">Не удается войти в систему</string>
+    <string name="create_pin">Придумайте PIN-код:</string>
+    <string name="enter_pin">Введите PIN-код:</string>
+    <string name="repeat_pin">Повторите PIN-код:</string>
+    <string name="pins_do_not_match">Введенные PIN-коды не совпадают</string>
+    <string name="wrong_pin">Неправильный PIN-код</string>
 </resources>

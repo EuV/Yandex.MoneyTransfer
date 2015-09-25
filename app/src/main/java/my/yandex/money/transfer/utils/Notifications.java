@@ -16,10 +16,18 @@ public final class Notifications {
     }
 
     public static void showToUser(final int resId) {
+        showToUser(context.getString(resId));
+    }
+
+    public static void showToUser(final int resId, final Object... args) {
+        showToUser(String.format(context.getString(resId), args));
+    }
+
+    public static void showToUser(final String msg) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(context, context.getString(resId), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -6,7 +6,7 @@ import android.util.Log;
 import com.yandex.money.api.model.Error;
 
 public class LogActivity extends AppCompatActivity {
-    private final String TAG = getClass().getName();
+    protected final String TAG = getClass().getName();
 
     protected void logDebug(String msg) {
         if (BuildConfig.DEBUG && msg != null) {

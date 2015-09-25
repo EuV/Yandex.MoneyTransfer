@@ -3,6 +3,7 @@ package my.yandex.money.transfer;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
@@ -102,10 +103,14 @@ public class SignInActivity extends LogActivity {
 
 
     private void signIn() {
-        if (Preferences.hasEncryptedAccessToken()) {
-            // TODO: Redirect to PIN Activity
-        } else {
+        String encryptedToken = Preferences.getEncryptedAccessToken();
+        if (encryptedToken == null) {
             authorizeInWebView();
+        } else {
+            Intent intent = new Intent(this, PINActivity.class);
+            intent.putExtra(PINActivity.ACCESS_TOKEN_ENCRYPTED, encryptedToken);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -191,7 +196,10 @@ public class SignInActivity extends LogActivity {
                 public void onResponse(Token token) {
                     if (token.accessToken != null) {
                         session.setAccessToken(token.accessToken);
-                        // TODO: save token, redirect to PIN Activity
+                        Intent intent = new Intent(SignInActivity.this, PINActivity.class);
+                        intent.putExtra(PINActivity.ACCESS_TOKEN_PLAIN, token.accessToken);
+                        startActivity(intent);
+                        finish();
                     } else {
                         logError(token.error);
                         authorizationFailed();

@@ -9,4 +9,12 @@
     <string name="error_in_server_response">An error occurred while processing server response</string>
     <string name="access_denied">Access denied</string>
     <string name="authorization_failed">Authorization failed</string>
+    <string name="pin_min_length">Please enter at least %1$d digits</string>
+    <string name="pin_max_length">PIN-code length should not exceed %1$d symbols</string>
+    <string name="can_not_log_in">Can not log in</string>
+    <string name="create_pin">Create PIN-code:</string>
+    <string name="enter_pin">Enter PIN-code:</string>
+    <string name="repeat_pin">Repeat PIN-code:</string>
+    <string name="pins_do_not_match">Entered PIN-codes do not match</string>
+    <string name="wrong_pin">Wrong PIN-code</string>
 </resources>
