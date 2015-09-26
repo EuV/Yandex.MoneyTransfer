@@ -1,7 +1,9 @@
-package my.yandex.money.transfer;
+package my.yandex.money.transfer.activities;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import my.yandex.money.transfer.R;
+import my.yandex.money.transfer.activities.hierarchy.ApiRequestsActivity;
 import my.yandex.money.transfer.utils.Preferences;
 
 public class AccountActivity extends ApiRequestsActivity {

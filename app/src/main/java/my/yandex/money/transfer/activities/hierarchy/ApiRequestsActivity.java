@@ -1,4 +1,4 @@
-package my.yandex.money.transfer;
+package my.yandex.money.transfer.activities.hierarchy;
 
 import android.app.LoaderManager;
 import android.content.Loader;
@@ -16,8 +16,10 @@ import com.yandex.money.api.methods.ProcessPayment;
 import com.yandex.money.api.methods.RequestExternalPayment;
 import com.yandex.money.api.methods.RequestPayment;
 import com.yandex.money.api.methods.Token;
+import my.yandex.money.transfer.ApiLoader;
+import my.yandex.money.transfer.ResponseWrapper;
 
-public class ApiRequestsActivity extends LogActivity implements LoaderManager.LoaderCallbacks<Object> {
+public abstract class ApiRequestsActivity extends LogActivity implements LoaderManager.LoaderCallbacks<Object> {
     private final String KEY_LAST_RESPONSE_HASH = TAG + ".KEY_LAST_RESPONSE_HASH";
 
     private long lastResponseHash;

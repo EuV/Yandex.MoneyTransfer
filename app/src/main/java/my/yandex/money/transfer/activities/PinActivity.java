@@ -1,4 +1,4 @@
-package my.yandex.money.transfer;
+package my.yandex.money.transfer.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,13 +7,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.yandex.money.api.methods.AccountInfo;
+import my.yandex.money.transfer.App;
+import my.yandex.money.transfer.R;
+import my.yandex.money.transfer.activities.hierarchy.ApiRequestsActivity;
 import my.yandex.money.transfer.utils.Crypto;
 import my.yandex.money.transfer.utils.Notifications;
 import my.yandex.money.transfer.utils.Preferences;
 
-import static my.yandex.money.transfer.PinActivity.State.CONFIRM_PIN;
-import static my.yandex.money.transfer.PinActivity.State.CREATE_PIN;
-import static my.yandex.money.transfer.PinActivity.State.PROVIDE_PIN;
+import static my.yandex.money.transfer.activities.PinActivity.State.CONFIRM_PIN;
+import static my.yandex.money.transfer.activities.PinActivity.State.CREATE_PIN;
+import static my.yandex.money.transfer.activities.PinActivity.State.PROVIDE_PIN;
 
 
 public class PinActivity extends ApiRequestsActivity {

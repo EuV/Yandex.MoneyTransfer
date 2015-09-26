@@ -1,11 +1,12 @@
-package my.yandex.money.transfer;
+package my.yandex.money.transfer.activities.hierarchy;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import com.yandex.money.api.model.Error;
+import my.yandex.money.transfer.BuildConfig;
 
-public class LogActivity extends AppCompatActivity {
+public abstract class LogActivity extends AppCompatActivity {
     protected final String TAG = getClass().getName();
 
     protected void logDebug(String msg) {

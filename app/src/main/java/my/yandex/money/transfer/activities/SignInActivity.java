@@ -1,4 +1,4 @@
-package my.yandex.money.transfer;
+package my.yandex.money.transfer.activities;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -18,6 +18,9 @@ import android.widget.ProgressBar;
 import com.yandex.money.api.methods.Token;
 import com.yandex.money.api.net.AuthorizationCodeResponse;
 import java.net.URISyntaxException;
+import my.yandex.money.transfer.ApiLoader;
+import my.yandex.money.transfer.R;
+import my.yandex.money.transfer.activities.hierarchy.ApiRequestsActivity;
 import my.yandex.money.transfer.utils.Connections;
 import my.yandex.money.transfer.utils.Cookies;
 import my.yandex.money.transfer.utils.Notifications;

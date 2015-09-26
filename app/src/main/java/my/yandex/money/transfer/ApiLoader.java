@@ -16,10 +16,10 @@ import my.yandex.money.transfer.utils.Connections;
 import my.yandex.money.transfer.utils.Notifications;
 
 public class ApiLoader extends Loader<Object> {
-    static final String CLIENT_ID = "DE70875A6C42ACAA9BB53B5B56F8A7D1C686F8975E0DA5B7CE2C8B2876BAF214";
-    static final String REDIRECT_URI = "http://yandex.money-transfer.ru/process";
-    static final String AUTHORIZE_URI = "https://m.money.yandex.ru/oauth/authorize";
-    static final String AUTHORIZE_RESPONSE_URI = AUTHORIZE_URI + "?";
+    public static final String CLIENT_ID = "DE70875A6C42ACAA9BB53B5B56F8A7D1C686F8975E0DA5B7CE2C8B2876BAF214";
+    public static final String REDIRECT_URI = "http://yandex.money-transfer.ru/process";
+    public static final String AUTHORIZE_URI = "https://m.money.yandex.ru/oauth/authorize";
+    public static final String AUTHORIZE_RESPONSE_URI = AUTHORIZE_URI + "?";
 
     private OAuth2Session session;
     private ResponseWrapper response;
