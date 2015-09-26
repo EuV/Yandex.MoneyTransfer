@@ -5,17 +5,19 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.yandex.money.api.methods.AccountInfo;
+import my.yandex.money.transfer.utils.Connections;
 import my.yandex.money.transfer.utils.Crypto;
 import my.yandex.money.transfer.utils.Notifications;
 import my.yandex.money.transfer.utils.Preferences;
 
-import static my.yandex.money.transfer.PINActivity.State.CONFIRM_PIN;
-import static my.yandex.money.transfer.PINActivity.State.CREATE_PIN;
-import static my.yandex.money.transfer.PINActivity.State.PROVIDE_PIN;
+import static my.yandex.money.transfer.PinActivity.State.CONFIRM_PIN;
+import static my.yandex.money.transfer.PinActivity.State.CREATE_PIN;
+import static my.yandex.money.transfer.PinActivity.State.PROVIDE_PIN;
 
 
-public class PINActivity extends LogActivity {
-    private static final String TAG = PINActivity.class.getName();
+public class PinActivity extends ApiRequestsActivity {
+    private static final String TAG = PinActivity.class.getName();
 
     private static final String STATE = TAG + ".STATE";
     private static final String LABEL = TAG + ".LABEL";
@@ -42,6 +44,7 @@ public class PINActivity extends LogActivity {
         label = (TextView) findViewById(R.id.pin_label);
         findViewById(R.id.pin_ok).setOnClickListener(new OkOnClickListener());
 
+        // In this case all the data will be handled via onRestoreInstanceState()
         if (savedInstanceState != null) return;
 
         plainToken = getIntent().getStringExtra(ACCESS_TOKEN_PLAIN);
@@ -61,7 +64,7 @@ public class PINActivity extends LogActivity {
 
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ACCESS_TOKEN_ENCRYPTED, encryptedToken);
         outState.putString(ACCESS_TOKEN_PLAIN, plainToken);
@@ -85,7 +88,7 @@ public class PINActivity extends LogActivity {
     private class OkOnClickListener implements View.OnClickListener {
 
         @Override
-        public void onClick(View okButton) {
+        public void onClick(View v) {
             String userPin = ((EditText) findViewById(R.id.pin_editor)).getText().toString();
             if (userPin.length() < MIN_PIN_LENGTH) {
                 Notifications.showToUser(R.string.pin_min_length, MIN_PIN_LENGTH);
@@ -117,15 +120,7 @@ public class PINActivity extends LogActivity {
                     break;
 
                 case PROVIDE_PIN:
-                    okButton.setEnabled(false);
-                    if (decryptAndCheck(encryptedToken, userPin)) {
-                        goToPaymentActivity();
-                    } else {
-                        changeState(PROVIDE_PIN);
-                        Notifications.showToUser(R.string.wrong_pin);
-                        // TODO: logout
-                    }
-                    okButton.setEnabled(true);
+                    decryptAndCheck(encryptedToken, userPin);
                     break;
             }
         }
@@ -144,39 +139,67 @@ public class PINActivity extends LogActivity {
     }
 
 
-    private boolean decryptAndCheck(String encryptedToken, String pin) {
-        String plainToken = Crypto.decrypt(encryptedToken, pin);
+    private void decryptAndCheck(String encryptedToken, String pin) {
+        plainToken = Crypto.decrypt(encryptedToken, pin);
 
         if (plainToken == null) {
             logDebug("Decrypted token is null");
-            return false;
+            pinIncorrect();
+            return;
         }
 
         if (App.hasToken()) {
             if (plainToken.equals(App.getToken())) {
                 logDebug("Decrypted token matches the stored one");
-                return true;
+                pinCorrect();
             } else {
                 logDebug("Decrypted token doesn't match the stored one");
-                return false;
+                pinIncorrect();
             }
+            return;
         }
 
-        if (!remoteCheckSucceed(plainToken)) {
-            logDebug("Decrypted token has failed remote check");
-            return false;
+        if (!Connections.hasConnection()) {
+            Notifications.showToUser(R.string.no_network_connection);
+            return;
         }
 
-        logDebug("Decrypted token is valid");
+        loader.checkToken(plainToken);
+    }
+
+
+    /**
+     * If this callback is invoked it indicates that the PIN entered is correct
+     * (we don't actually need an account info for now)
+     */
+    @Override
+    protected void onAccountInfoLoaded(AccountInfo accountInfo) {
+        logDebug("Decrypted token has passed remote check");
         App.setToken(plainToken);
-        return true;
+        pinCorrect();
     }
 
 
-    private boolean remoteCheckSucceed(String token) {
-        // TODO
-        return true;
+    /**
+     * If this callback is invoked it indicates that the PIN entered is wrong
+     */
+    @Override
+    protected void onLoadFailed(Exception exception) {
+        logDebug("Decrypted token has failed remote check");
+        pinIncorrect();
     }
+
+
+    private void pinCorrect() {
+        goToPaymentActivity();
+    }
+
+    private void pinIncorrect() {
+        changeState(PROVIDE_PIN);
+        Notifications.showToUser(R.string.wrong_pin);
+        // TODO: logout
+    }
+
 
     private void goToPaymentActivity() {
         // TODO
