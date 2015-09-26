@@ -2,6 +2,8 @@ package my.yandex.money.transfer.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.widget.TextView;
 import com.yandex.money.api.methods.AccountInfo;
 import com.yandex.money.api.model.AccountStatus;
@@ -15,7 +17,7 @@ import my.yandex.money.transfer.R;
 import my.yandex.money.transfer.activities.hierarchy.ApiRequestsActivity;
 import my.yandex.money.transfer.utils.Preferences;
 
-public class AccountActivity extends ApiRequestsActivity {
+public class AccountActivity extends ApiRequestsActivity implements OnRefreshListener {
     private static final Map<AccountStatus, Integer> ACCOUNT_STATUS_MAP = new HashMap<>();
 
     static {
@@ -35,6 +37,7 @@ public class AccountActivity extends ApiRequestsActivity {
     private TextView accountStatus;
     private TextView balance;
     private TextView balanceAvailable;
+    private SwipeRefreshLayout refresher;
 
 
     @Override
@@ -79,6 +82,14 @@ public class AccountActivity extends ApiRequestsActivity {
         accountStatus = (TextView) findViewById(R.id.account_status);
         balance = (TextView) findViewById(R.id.balance_value);
         balanceAvailable = (TextView) findViewById(R.id.balance_available_value);
+        refresher = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        refresher.setOnRefreshListener(this);
+    }
+
+
+    @Override
+    protected void onLoadFailed(Exception exception) {
+        refresher.setRefreshing(false);
     }
 
 
@@ -89,6 +100,7 @@ public class AccountActivity extends ApiRequestsActivity {
         balance.setText(numberFormat.format(accountInfo.balance));
         accountNumber.setText(Strings.concatenate(Strings.split(accountInfo.account, 4), " "));
         accountStatus.setText(getString(ACCOUNT_STATUS_MAP.get(accountInfo.accountStatus)));
+        refresher.setRefreshing(false);
     }
 
 
@@ -99,5 +111,11 @@ public class AccountActivity extends ApiRequestsActivity {
             available = details.available;
         }
         return available;
+    }
+
+
+    @Override
+    public void onRefresh() {
+        loader.getAccountInfo();
     }
 }

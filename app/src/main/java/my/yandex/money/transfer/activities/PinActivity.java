@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.yandex.money.api.methods.AccountInfo;
+import java.net.ConnectException;
 import my.yandex.money.transfer.App;
 import my.yandex.money.transfer.R;
 import my.yandex.money.transfer.activities.hierarchy.ApiRequestsActivity;
@@ -183,6 +184,7 @@ public class PinActivity extends ApiRequestsActivity {
      */
     @Override
     protected void onLoadFailed(Exception exception) {
+        if (exception instanceof ConnectException) return;
         logDebug("Decrypted token has failed remote check");
         pinIncorrect();
     }

@@ -12,6 +12,7 @@ import com.yandex.money.api.net.DefaultApiClient;
 import com.yandex.money.api.net.OAuth2Session;
 import com.yandex.money.api.net.OnResponseReady;
 import java.io.IOException;
+import java.net.ConnectException;
 import my.yandex.money.transfer.utils.Connections;
 import my.yandex.money.transfer.utils.Notifications;
 
@@ -37,6 +38,7 @@ public class ApiLoader extends Loader<Object> {
     protected void onForceLoad() {
         if (!Connections.hasConnection()) {
             Notifications.showToUser(R.string.no_network_connection);
+            deliverResult(new ConnectException());
             return;
         }
 
