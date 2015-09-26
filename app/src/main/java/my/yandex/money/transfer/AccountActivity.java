@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import my.yandex.money.transfer.utils.Preferences;
 
-public class AccountActivity extends ApiRequestsActivity {
+public class AccountActivity extends FixRequestsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

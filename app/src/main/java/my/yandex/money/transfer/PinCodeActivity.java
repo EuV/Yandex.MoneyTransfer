@@ -11,13 +11,13 @@ import my.yandex.money.transfer.utils.Crypto;
 import my.yandex.money.transfer.utils.Notifications;
 import my.yandex.money.transfer.utils.Preferences;
 
-import static my.yandex.money.transfer.PinActivity.State.CONFIRM_PIN;
-import static my.yandex.money.transfer.PinActivity.State.CREATE_PIN;
-import static my.yandex.money.transfer.PinActivity.State.PROVIDE_PIN;
+import static my.yandex.money.transfer.PinCodeActivity.State.CONFIRM_PIN;
+import static my.yandex.money.transfer.PinCodeActivity.State.CREATE_PIN;
+import static my.yandex.money.transfer.PinCodeActivity.State.PROVIDE_PIN;
 
 
-public class PinActivity extends ApiRequestsActivity {
-    private static final String TAG = PinActivity.class.getName();
+public class PinCodeActivity extends FixRequestsActivity {
+    private static final String TAG = PinCodeActivity.class.getName();
 
     private static final String STATE = TAG + ".STATE";
     private static final String LABEL = TAG + ".LABEL";
@@ -198,7 +198,7 @@ public class PinActivity extends ApiRequestsActivity {
 
 
     private void goToMyAccount() {
-        startActivity(new Intent(PinActivity.this, AccountActivity.class));
+        startActivity(new Intent(PinCodeActivity.this, AccountActivity.class));
         finish();
     }
 
