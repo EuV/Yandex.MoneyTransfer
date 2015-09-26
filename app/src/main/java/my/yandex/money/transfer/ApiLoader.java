@@ -15,7 +15,7 @@ import java.io.IOException;
 import my.yandex.money.transfer.utils.Connections;
 import my.yandex.money.transfer.utils.Notifications;
 
-public class FixLoader extends Loader<Object> {
+public class ApiLoader extends Loader<Object> {
     static final String CLIENT_ID = "DE70875A6C42ACAA9BB53B5B56F8A7D1C686F8975E0DA5B7CE2C8B2876BAF214";
     static final String REDIRECT_URI = "http://yandex.money-transfer.ru/process";
     static final String AUTHORIZE_URI = "https://m.money.yandex.ru/oauth/authorize";
@@ -26,7 +26,7 @@ public class FixLoader extends Loader<Object> {
     private ApiRequest request;
     private Handler handler;
 
-    public FixLoader(Context context) {
+    public ApiLoader(Context context) {
         super(context);
         session = new OAuth2Session(new DefaultApiClient(CLIENT_ID));
         session.setDebugLogging(BuildConfig.DEBUG);

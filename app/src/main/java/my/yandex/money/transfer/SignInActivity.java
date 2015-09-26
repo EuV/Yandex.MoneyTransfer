@@ -23,7 +23,7 @@ import my.yandex.money.transfer.utils.Cookies;
 import my.yandex.money.transfer.utils.Notifications;
 import my.yandex.money.transfer.utils.Preferences;
 
-public class SignInActivity extends FixRequestsActivity {
+public class SignInActivity extends ApiRequestsActivity {
     private static final int TAP_TO_EXIT_INTERVAL = 2000;
 
     private long whenBackButtonWasPressed;
@@ -100,8 +100,8 @@ public class SignInActivity extends FixRequestsActivity {
         if (encryptedToken == null) {
             authorizeInWebView();
         } else {
-            Intent intent = new Intent(this, PinCodeActivity.class);
-            intent.putExtra(PinCodeActivity.ACCESS_TOKEN_ENCRYPTED, encryptedToken);
+            Intent intent = new Intent(this, PinActivity.class);
+            intent.putExtra(PinActivity.ACCESS_TOKEN_ENCRYPTED, encryptedToken);
             startActivity(intent);
             finish();
         }
@@ -114,7 +114,7 @@ public class SignInActivity extends FixRequestsActivity {
             return;
         }
 
-        webView.postUrl(FixLoader.AUTHORIZE_URI, loader.getAuthorizeParams());
+        webView.postUrl(ApiLoader.AUTHORIZE_URI, loader.getAuthorizeParams());
         webView.setVisibility(View.VISIBLE);
     }
 
@@ -136,10 +136,10 @@ public class SignInActivity extends FixRequestsActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.contains(FixLoader.AUTHORIZE_RESPONSE_URI)) {
+                if (url.contains(ApiLoader.AUTHORIZE_RESPONSE_URI)) {
                     Preferences.setLogin(Cookies.getLogin(CookieManager.getInstance().getCookie(url)));
                 }
-                if (url.contains(FixLoader.REDIRECT_URI)) {
+                if (url.contains(ApiLoader.REDIRECT_URI)) {
                     webView.setVisibility(View.INVISIBLE);
                     try {
                         AuthorizationCodeResponse response = AuthorizationCodeResponse.parse(url);
@@ -170,8 +170,8 @@ public class SignInActivity extends FixRequestsActivity {
     @Override
     protected void onTokenLoaded(Token token) {
         if (token.accessToken != null) {
-            Intent intent = new Intent(SignInActivity.this, PinCodeActivity.class);
-            intent.putExtra(PinCodeActivity.ACCESS_TOKEN_PLAIN, token.accessToken);
+            Intent intent = new Intent(SignInActivity.this, PinActivity.class);
+            intent.putExtra(PinActivity.ACCESS_TOKEN_PLAIN, token.accessToken);
             startActivity(intent);
             finish();
         } else {

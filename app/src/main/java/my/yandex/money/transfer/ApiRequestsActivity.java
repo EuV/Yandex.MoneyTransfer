@@ -17,11 +17,11 @@ import com.yandex.money.api.methods.RequestExternalPayment;
 import com.yandex.money.api.methods.RequestPayment;
 import com.yandex.money.api.methods.Token;
 
-public class FixRequestsActivity extends LogActivity implements LoaderManager.LoaderCallbacks<Object> {
+public class ApiRequestsActivity extends LogActivity implements LoaderManager.LoaderCallbacks<Object> {
     private final String KEY_LAST_RESPONSE_HASH = TAG + ".KEY_LAST_RESPONSE_HASH";
 
     private long lastResponseHash;
-    protected FixLoader loader;
+    protected ApiLoader loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class FixRequestsActivity extends LogActivity implements LoaderManager.Lo
             lastResponseHash = savedInstanceState.getLong(KEY_LAST_RESPONSE_HASH);
         }
 
-        loader = (FixLoader) getLoaderManager().initLoader(0, null, this);
+        loader = (ApiLoader) getLoaderManager().initLoader(0, null, this);
     }
 
 
@@ -51,7 +51,7 @@ public class FixRequestsActivity extends LogActivity implements LoaderManager.Lo
 
     @Override
     public Loader<Object> onCreateLoader(int id, Bundle args) {
-        return new FixLoader(this);
+        return new ApiLoader(this);
     }
 
 

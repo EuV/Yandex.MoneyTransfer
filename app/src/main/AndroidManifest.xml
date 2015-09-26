@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PinCodeActivity"
+            android:name=".PinActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".AccountActivity"
