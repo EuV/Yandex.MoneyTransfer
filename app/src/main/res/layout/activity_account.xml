@@ -29,7 +29,6 @@
                     android:id="@+id/login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Login"
                     android:layout_marginTop="22dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
@@ -40,7 +39,6 @@
                 <TextView
                     style="@style/MainText"
                     android:id="@+id/account_number"
-                    android:text="4100 1734 4882 357"
                     android:layout_marginTop="10dp"
                     android:layout_below="@id/login"
                     android:layout_alignLeft="@id/login"
@@ -60,8 +58,7 @@
                 <TextView
                     style="@style/MainText"
                     android:id="@+id/account_status"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/account_status_named" />
+                    android:layout_centerHorizontal="true" />
 
                 <TextView
                     style="@style/MainText"
@@ -81,7 +78,6 @@
                 <TextView
                     style="@style/MainText"
                     android:id="@+id/balance_value"
-                    android:text="100,00"
                     android:layout_alignTop="@id/balance"
                     android:layout_toLeftOf="@id/balance_value_rub"
                     android:layout_toStartOf="@id/balance_value_rub" />
@@ -104,7 +100,6 @@
                 <TextView
                     style="@style/MainText"
                     android:id="@+id/balance_available_value"
-                    android:text="99,20"
                     android:layout_alignTop="@id/balance_available"
                     android:layout_toLeftOf="@id/balance_available_value_rub"
                     android:layout_toStartOf="@id/balance_available_value_rub" />

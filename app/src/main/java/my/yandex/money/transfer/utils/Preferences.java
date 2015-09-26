@@ -11,6 +11,7 @@ import java.security.SecureRandom;
 public final class Preferences {
     private static final String TAG = Preferences.class.getName();
     private static final String KEY_FIRST_VISIT = "first_visit";
+    private static final String KEY_LOGIN = "login";
     private static final String KEY_INITIALIZATION_VECTOR = "initialization_vector";
     private static final String KEY_BASE_KEY = "base_key";
     private static final String KEY_ENCRYPTED_ACCESS_TOKEN = "encrypted_access_token";
@@ -31,6 +32,16 @@ public final class Preferences {
     public static void markFirstVisit() {
         editPreferences().putBoolean(KEY_FIRST_VISIT, false).apply();
         Log.d(TAG, "The first visit has been marked");
+    }
+
+
+    public static void setLogin(String login) {
+        editPreferences().putString(KEY_LOGIN, login).apply();
+    }
+
+
+    public static String getLogin() {
+        return getPreferences().getString(KEY_LOGIN, "");
     }
 
 

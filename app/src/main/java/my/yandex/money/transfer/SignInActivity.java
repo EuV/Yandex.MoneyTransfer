@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -18,6 +19,7 @@ import com.yandex.money.api.methods.Token;
 import com.yandex.money.api.net.AuthorizationCodeResponse;
 import java.net.URISyntaxException;
 import my.yandex.money.transfer.utils.Connections;
+import my.yandex.money.transfer.utils.Cookies;
 import my.yandex.money.transfer.utils.Notifications;
 import my.yandex.money.transfer.utils.Preferences;
 
@@ -35,7 +37,9 @@ public class SignInActivity extends ApiRequestsActivity {
 
         setupViews();
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
+            CookieManager.getInstance().removeAllCookie();
+        } else {
             webView.restoreState(savedInstanceState);
             return;
         }
@@ -132,6 +136,9 @@ public class SignInActivity extends ApiRequestsActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.contains(ApiLoader.AUTHORIZE_RESPONSE_URI)) {
+                    Preferences.setLogin(Cookies.getLogin(CookieManager.getInstance().getCookie(url)));
+                }
                 if (url.contains(ApiLoader.REDIRECT_URI)) {
                     webView.setVisibility(View.INVISIBLE);
                     try {
