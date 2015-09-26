@@ -17,4 +17,12 @@
     <string name="repeat_pin">Повторите PIN-код:</string>
     <string name="pins_do_not_match">Введенные PIN-коды не совпадают</string>
     <string name="wrong_pin">Неправильный PIN-код</string>
+    <string name="my_account">Мой аккаунт</string>
+    <string name="ad">Реклама или что-нибудь еще ;)</string>
+    <string name="account_status_anonymous">Анонимный счет</string>
+    <string name="account_status_named">Именной счет</string>
+    <string name="account_status_identified">Идентифицированный счет</string>
+    <string name="balance">Баланс:</string>
+    <string name="available">Доступно:</string>
+    <string name="rub">&#160;Руб.</string>
 </resources>

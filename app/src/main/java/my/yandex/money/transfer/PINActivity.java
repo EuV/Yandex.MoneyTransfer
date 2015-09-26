@@ -1,5 +1,6 @@
 package my.yandex.money.transfer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -108,7 +109,7 @@ public class PinActivity extends ApiRequestsActivity {
                     if (pin.equals(userPin)) {
                         if (encryptAndSave(plainToken, pin)) {
                             App.setToken(plainToken);
-                            goToPaymentActivity();
+                            goToMyAccount();
                         } else {
                             Notifications.showToUser(R.string.can_not_log_in);
                         }
@@ -185,7 +186,8 @@ public class PinActivity extends ApiRequestsActivity {
 
 
     private void pinCorrect() {
-        goToPaymentActivity();
+        // TODO: go back if there is where to go back
+        goToMyAccount();
     }
 
     private void pinIncorrect() {
@@ -195,8 +197,9 @@ public class PinActivity extends ApiRequestsActivity {
     }
 
 
-    private void goToPaymentActivity() {
-        // TODO
+    private void goToMyAccount() {
+        startActivity(new Intent(PinActivity.this, AccountActivity.class));
+        finish();
     }
 
 

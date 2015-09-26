@@ -1,0 +1,11 @@
+package my.yandex.money.transfer;
+
+import android.os.Bundle;
+
+public class AccountActivity extends ApiRequestsActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_account);
+    }
+}

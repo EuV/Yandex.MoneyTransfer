@@ -20,6 +20,10 @@
         <activity
             android:name=".PinActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".AccountActivity"
+            android:launchMode="singleTop"
+            android:label="@string/my_account" />
     </application>
 
 </manifest>

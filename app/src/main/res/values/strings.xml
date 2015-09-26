@@ -17,4 +17,12 @@
     <string name="repeat_pin">Repeat PIN-code:</string>
     <string name="pins_do_not_match">Entered PIN-codes do not match</string>
     <string name="wrong_pin">Wrong PIN-code</string>
+    <string name="my_account">My Account</string>
+    <string name="ad">Ad or something else ;)</string>
+    <string name="account_status_anonymous">Anonymous account</string>
+    <string name="account_status_named">Named account</string>
+    <string name="account_status_identified">Identified account</string>
+    <string name="balance">Balance:</string>
+    <string name="available">Available:</string>
+    <string name="rub">&#160;Rub.</string>
 </resources>

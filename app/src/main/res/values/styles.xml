@@ -8,4 +8,20 @@
         <item name="android:textColorPrimary">@color/white_100</item>
     </style>
 
+    <style name="CardInfo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/card_info_margin</item>
+        <item name="android:layout_marginTop">@dimen/card_info_margin</item>
+        <item name="android:layout_marginRight">@dimen/card_info_margin</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardCornerRadius">3dp</item>
+    </style>
+
+    <style name="MainText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/main_text_size</item>
+    </style>
+
 </resources>
