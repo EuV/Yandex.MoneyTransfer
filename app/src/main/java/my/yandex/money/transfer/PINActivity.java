@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.yandex.money.api.methods.AccountInfo;
-import my.yandex.money.transfer.utils.Connections;
 import my.yandex.money.transfer.utils.Crypto;
 import my.yandex.money.transfer.utils.Notifications;
 import my.yandex.money.transfer.utils.Preferences;
@@ -156,11 +155,6 @@ public class PinActivity extends ApiRequestsActivity {
                 logDebug("Decrypted token doesn't match the stored one");
                 pinIncorrect();
             }
-            return;
-        }
-
-        if (!Connections.hasConnection()) {
-            Notifications.showToUser(R.string.no_network_connection);
             return;
         }
 

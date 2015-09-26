@@ -12,6 +12,8 @@ import com.yandex.money.api.net.DefaultApiClient;
 import com.yandex.money.api.net.OAuth2Session;
 import com.yandex.money.api.net.OnResponseReady;
 import java.io.IOException;
+import my.yandex.money.transfer.utils.Connections;
+import my.yandex.money.transfer.utils.Notifications;
 
 public class ApiLoader extends Loader<Object> {
     static final String CLIENT_ID = "DE70875A6C42ACAA9BB53B5B56F8A7D1C686F8975E0DA5B7CE2C8B2876BAF214";
@@ -32,6 +34,11 @@ public class ApiLoader extends Loader<Object> {
 
     @Override
     protected void onForceLoad() {
+        if (!Connections.hasConnection()) {
+            Notifications.showToUser(R.string.no_network_connection);
+            return;
+        }
+
         try {
             session.enqueue(request, new OnResponseReady() {
 
