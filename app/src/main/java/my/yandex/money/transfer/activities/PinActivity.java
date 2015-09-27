@@ -24,19 +24,22 @@ import static my.yandex.money.transfer.activities.PinActivity.State.PROVIDE_PIN;
 public class PinActivity extends ApiRequestsActivity {
     private static final String TAG = PinActivity.class.getName();
 
-    private static final String STATE = TAG + ".STATE";
-    private static final String LABEL = TAG + ".LABEL";
-    private static final String PIN = TAG + ".PIN";
+    private static final String KEY_STATE = TAG + ".STATE";
+    private static final String KEY_LABEL = TAG + ".LABEL";
+    private static final String KEY_PIN = TAG + ".PIN";
+    private static final String KEY_FAILED_ATTEMPTS = TAG + ".FAILED_ATTEMPTS";
 
     public static final String ACCESS_TOKEN_PLAIN = TAG + ".PLAIN";
     public static final String ACCESS_TOKEN_ENCRYPTED = TAG + ".ENCRYPTED";
 
     private static final int MIN_PIN_LENGTH = 4;
     private static final int MAX_PIN_LENGTH = 16;
+    private static final int MAX_FAILED_ATTEMPTS = 3;
 
     private String plainToken;
     private String encryptedToken;
     private String pin;
+    private int failedAttempts = 0;
 
     private State state;
     private TextView label;
@@ -73,9 +76,10 @@ public class PinActivity extends ApiRequestsActivity {
         super.onSaveInstanceState(outState);
         outState.putString(ACCESS_TOKEN_ENCRYPTED, encryptedToken);
         outState.putString(ACCESS_TOKEN_PLAIN, plainToken);
-        outState.putSerializable(STATE, state);
-        outState.putCharSequence(LABEL, label.getText());
-        outState.putString(PIN, pin);
+        outState.putSerializable(KEY_STATE, state);
+        outState.putCharSequence(KEY_LABEL, label.getText());
+        outState.putString(KEY_PIN, pin);
+        outState.putInt(KEY_FAILED_ATTEMPTS, failedAttempts);
     }
 
 
@@ -84,9 +88,10 @@ public class PinActivity extends ApiRequestsActivity {
         super.onRestoreInstanceState(savedInstanceState);
         encryptedToken = savedInstanceState.getString(ACCESS_TOKEN_ENCRYPTED);
         plainToken = savedInstanceState.getString(ACCESS_TOKEN_PLAIN);
-        state = (State) savedInstanceState.getSerializable(STATE);
-        label.setText(savedInstanceState.getCharSequence(LABEL));
-        pin = savedInstanceState.getString(PIN);
+        state = (State) savedInstanceState.getSerializable(KEY_STATE);
+        label.setText(savedInstanceState.getCharSequence(KEY_LABEL));
+        pin = savedInstanceState.getString(KEY_PIN);
+        failedAttempts = savedInstanceState.getInt(KEY_FAILED_ATTEMPTS);
     }
 
 
@@ -147,6 +152,14 @@ public class PinActivity extends ApiRequestsActivity {
     }
 
 
+    /**
+     * Checks whether PIN-code entered is valid by comparing decrypted token with
+     * the stored one or asking the server if there is no standard plain token.
+     * TODO: Add some delay to prevent brute force and improve security
+     *
+     * @param encryptedToken an encrypted token received from a previous activity
+     * @param pin            users PIN-code
+     */
     private void decryptAndCheck(String encryptedToken, String pin) {
         plainToken = Crypto.decrypt(encryptedToken, pin);
 
@@ -202,7 +215,7 @@ public class PinActivity extends ApiRequestsActivity {
     private void pinIncorrect() {
         changeState(PROVIDE_PIN);
         Notifications.showToUser(R.string.wrong_pin);
-        // TODO: logout
+        if (++failedAttempts == MAX_FAILED_ATTEMPTS) logOut();
     }
 
 
