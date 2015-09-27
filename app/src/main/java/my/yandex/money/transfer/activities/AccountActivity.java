@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import com.yandex.money.api.methods.AccountInfo;
 import com.yandex.money.api.model.AccountStatus;
@@ -142,6 +143,12 @@ public class AccountActivity extends SecurityActivity implements OnRefreshListen
         balanceAvailable = (TextView) findViewById(R.id.balance_available_value);
         refresher = (SwipeRefreshLayout) findViewById(R.id.refresh);
         refresher.setOnRefreshListener(this);
+        findViewById(R.id.button_transfer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(TransferActivity.class);
+            }
+        });
     }
 
 

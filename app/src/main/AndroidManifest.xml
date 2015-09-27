@@ -11,30 +11,59 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
         <activity android:name=".activities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.PinActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+
         <activity
             android:name=".activities.AccountActivity"
+            android:launchMode="singleTask"
             android:label="@string/my_account" />
+
         <activity
             android:name=".activities.TransferActivity"
-            android:label="@string/transfer" />
+            android:label="@string/transfer"
+            android:parentActivityName=".activities.AccountActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.AccountActivity" />
+        </activity>
+
         <activity
             android:name=".activities.HistoryActivity"
-            android:label="@string/history" />
+            android:label="@string/history"
+            android:parentActivityName=".activities.AccountActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.AccountActivity" />
+        </activity>
+
         <activity
             android:name=".activities.ContactsActivity"
-            android:label="@string/contacts" />
+            android:label="@string/contacts"
+            android:parentActivityName=".activities.AccountActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.AccountActivity" />
+        </activity>
+
         <activity
             android:name=".activities.GoodsAndServicesActivity"
-            android:label="@string/goods_and_services" />
+            android:label="@string/goods_and_services"
+            android:parentActivityName=".activities.AccountActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.AccountActivity" />
+        </activity>
+
     </application>
 
 </manifest>
