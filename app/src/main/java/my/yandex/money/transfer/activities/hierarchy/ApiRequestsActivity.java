@@ -63,6 +63,7 @@ public abstract class ApiRequestsActivity extends TapTwiceToExitActivity impleme
 
     private void logOut(boolean revoke) {
         if (revoke) loader.revokeToken();
+        Preferences.resetPinCodeFailedAttempts();
         deleteTokenLocalCopy();
         goToSignIn();
     }

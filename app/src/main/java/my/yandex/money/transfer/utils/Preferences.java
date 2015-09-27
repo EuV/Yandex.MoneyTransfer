@@ -15,6 +15,7 @@ public final class Preferences {
     private static final String KEY_INITIALIZATION_VECTOR = "initialization_vector";
     private static final String KEY_BASE_KEY = "base_key";
     private static final String KEY_ENCRYPTED_ACCESS_TOKEN = "encrypted_access_token";
+    private static final String KEY_PIN_CODE_FAILED_ATTEMPTS = "key_pin_code_failed_attempts";
     private static Context context;
 
     private Preferences() { /* */ }
@@ -80,6 +81,19 @@ public final class Preferences {
     public static void setEncryptedAccessToken(String token) {
         editPreferences().putString(KEY_ENCRYPTED_ACCESS_TOKEN, token).apply();
         Log.d(TAG, "Encrypted token has been saved");
+    }
+
+
+    public static int pinCodeFailedAttempt() {
+        int attempts = getPreferences().getInt(KEY_PIN_CODE_FAILED_ATTEMPTS, 0);
+        attempts++;
+        editPreferences().putInt(KEY_PIN_CODE_FAILED_ATTEMPTS, attempts).apply();
+        return attempts;
+    }
+
+
+    public static void resetPinCodeFailedAttempts() {
+        editPreferences().putInt(KEY_PIN_CODE_FAILED_ATTEMPTS, 0).apply();
     }
 
 

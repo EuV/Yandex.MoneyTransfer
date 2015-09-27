@@ -27,7 +27,6 @@ public class PinActivity extends ApiRequestsActivity {
     private static final String KEY_STATE = TAG + ".STATE";
     private static final String KEY_LABEL = TAG + ".LABEL";
     private static final String KEY_PIN = TAG + ".PIN";
-    private static final String KEY_FAILED_ATTEMPTS = TAG + ".FAILED_ATTEMPTS";
 
     public static final String ACCESS_TOKEN_PLAIN = TAG + ".PLAIN";
     public static final String ACCESS_TOKEN_ENCRYPTED = TAG + ".ENCRYPTED";
@@ -39,7 +38,6 @@ public class PinActivity extends ApiRequestsActivity {
     private String plainToken;
     private String encryptedToken;
     private String pin;
-    private int failedAttempts = 0;
 
     private State state;
     private TextView label;
@@ -79,7 +77,6 @@ public class PinActivity extends ApiRequestsActivity {
         outState.putSerializable(KEY_STATE, state);
         outState.putCharSequence(KEY_LABEL, label.getText());
         outState.putString(KEY_PIN, pin);
-        outState.putInt(KEY_FAILED_ATTEMPTS, failedAttempts);
     }
 
 
@@ -91,7 +88,6 @@ public class PinActivity extends ApiRequestsActivity {
         state = (State) savedInstanceState.getSerializable(KEY_STATE);
         label.setText(savedInstanceState.getCharSequence(KEY_LABEL));
         pin = savedInstanceState.getString(KEY_PIN);
-        failedAttempts = savedInstanceState.getInt(KEY_FAILED_ATTEMPTS);
     }
 
 
@@ -208,6 +204,7 @@ public class PinActivity extends ApiRequestsActivity {
 
 
     private void pinCorrect() {
+        Preferences.resetPinCodeFailedAttempts();
         finish();
     }
 
@@ -215,7 +212,12 @@ public class PinActivity extends ApiRequestsActivity {
     private void pinIncorrect() {
         changeState(PROVIDE_PIN);
         Notifications.showToUser(R.string.wrong_pin);
-        if (++failedAttempts == MAX_FAILED_ATTEMPTS) logOut();
+
+        // No local variable is accepted here even with saving in onSaveInstanceState()
+        // since the user may leave the app, thus this variable will return to zero
+        if (Preferences.pinCodeFailedAttempt() == MAX_FAILED_ATTEMPTS) {
+            logOut();
+        }
     }
 
 
