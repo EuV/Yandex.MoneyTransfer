@@ -12,25 +12,25 @@
                 android:id="@+id/action_transfer"
                 android:icon="@drawable/ic_send_black_24dp"
                 app:showAsAction="never"
-                android:title="@string/action_transfer" />
+                android:title="@string/transfer" />
 
             <item
                 android:id="@+id/action_history"
                 android:icon="@drawable/ic_history_black_24dp"
                 app:showAsAction="never"
-                android:title="@string/action_history" />
+                android:title="@string/history" />
 
             <item
                 android:id="@+id/action_contacts"
                 android:icon="@drawable/ic_contacts_black_24dp"
                 app:showAsAction="never"
-                android:title="@string/action_contacts" />
+                android:title="@string/contacts" />
 
             <item
                 android:id="@+id/action_goods_and_services"
                 android:icon="@drawable/ic_shopping_cart_black_24dp"
                 app:showAsAction="never"
-                android:title="@string/action_goods_and_services" />
+                android:title="@string/goods_and_services" />
 
             <item
                 android:id="@+id/action_exit"

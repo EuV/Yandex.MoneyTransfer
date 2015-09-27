@@ -13,14 +13,23 @@ public abstract class SecurityActivity extends ApiRequestsActivity {
     private final String STOP_TIME = TAG + ".STOP_TIME";
     private final String IS_ALREADY_CHECKED = TAG + ".IS_ALREADY_CHECKED";
 
-    private long stopTime;
+    /**
+     * Time when the user leaves an activity.
+     * Should be the only for entire application to prevent
+     * PIN-code check when switching between activities.
+     */
+    private static long leavingTime;
+
+    /**
+     * Prevents from looping between SecurityActivity descendants and PinActivity
+     */
     private boolean isAlreadyChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            stopTime = savedInstanceState.getLong(STOP_TIME);
+            leavingTime = savedInstanceState.getLong(STOP_TIME);
             isAlreadyChecked = savedInstanceState.getBoolean(IS_ALREADY_CHECKED);
         }
     }
@@ -35,14 +44,13 @@ public abstract class SecurityActivity extends ApiRequestsActivity {
             return;
         }
 
-        // Prevents from looping between *Activity and PinActivity
         if (isAlreadyChecked) {
             isAlreadyChecked = false;
             return;
         }
 
         long now = System.currentTimeMillis();
-        if (now - stopTime > ALLOWED_AFK_INTERVAL) {
+        if (now - leavingTime > ALLOWED_AFK_INTERVAL) {
             Intent intent = new Intent(this, PinActivity.class);
             intent.putExtra(PinActivity.ACCESS_TOKEN_ENCRYPTED, Preferences.getEncryptedAccessToken());
             startActivity(intent);
@@ -52,10 +60,16 @@ public abstract class SecurityActivity extends ApiRequestsActivity {
 
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        leavingTime = System.currentTimeMillis();
+    }
+
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        stopTime = System.currentTimeMillis();
-        outState.putLong(STOP_TIME, stopTime);
+        outState.putLong(STOP_TIME, leavingTime);
         outState.putBoolean(IS_ALREADY_CHECKED, isAlreadyChecked);
     }
 }

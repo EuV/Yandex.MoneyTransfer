@@ -1,5 +1,6 @@
 package my.yandex.money.transfer.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -93,15 +94,19 @@ public class AccountActivity extends SecurityActivity implements OnRefreshListen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_transfer:
+                startActivity(TransferActivity.class);
                 return true;
 
             case R.id.action_history:
+                startActivity(HistoryActivity.class);
                 return true;
 
             case R.id.action_contacts:
+                startActivity(ContactsActivity.class);
                 return true;
 
             case R.id.action_goods_and_services:
+                startActivity(GoodsAndServicesActivity.class);
                 return true;
 
             case R.id.action_exit:
@@ -110,6 +115,11 @@ public class AccountActivity extends SecurityActivity implements OnRefreshListen
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void startActivity(Class clazz) {
+        startActivity(new Intent(this, clazz));
     }
 
 

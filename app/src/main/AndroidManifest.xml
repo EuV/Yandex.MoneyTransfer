@@ -23,6 +23,18 @@
         <activity
             android:name=".activities.AccountActivity"
             android:label="@string/my_account" />
+        <activity
+            android:name=".activities.TransferActivity"
+            android:label="@string/transfer" />
+        <activity
+            android:name=".activities.HistoryActivity"
+            android:label="@string/history" />
+        <activity
+            android:name=".activities.ContactsActivity"
+            android:label="@string/contacts" />
+        <activity
+            android:name=".activities.GoodsAndServicesActivity"
+            android:label="@string/goods_and_services" />
     </application>
 
 </manifest>
