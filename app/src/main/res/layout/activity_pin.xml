@@ -1,20 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
-
-    <TextView
-        android:id="@+id/pin_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginBottom="10dp" />
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/pin_holder"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:gravity="center">
 
         <EditText
@@ -35,4 +28,26 @@
             android:text="@android:string/ok" />
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/pin_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/pin_holder"
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/action_exit"
+        android:padding="10dp"
+        android:background="@null"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:onClick="logOut" />
+
+</RelativeLayout>

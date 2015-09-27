@@ -115,6 +115,7 @@ public class PinActivity extends ApiRequestsActivity {
                     if (pin.equals(userPin)) {
                         if (encryptAndSave(plainToken, pin)) {
                             App.setToken(plainToken);
+                            Preferences.resetPinCodeFailedAttempts();
                             Intent intent = new Intent(PinActivity.this, AccountActivity.class);
                             intent.putExtra(SecurityActivity.NO_SECURITY_CHECK, true);
                             startActivity(intent);

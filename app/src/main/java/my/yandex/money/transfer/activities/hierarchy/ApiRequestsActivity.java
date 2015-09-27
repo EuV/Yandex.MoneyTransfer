@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
 import com.yandex.money.api.exceptions.InvalidTokenException;
 import com.yandex.money.api.methods.AccountInfo;
 import com.yandex.money.api.methods.AuxToken;
@@ -53,6 +54,16 @@ public abstract class ApiRequestsActivity extends TapTwiceToExitActivity impleme
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(KEY_LAST_RESPONSE_HASH, lastResponseHash);
+    }
+
+
+    /**
+     * The same as {@link ApiRequestsActivity#logOut()}, to be called by Buttons etc.
+     *
+     * @param v the view initiating
+     */
+    public void logOut(View v) {
+        logOut(true);
     }
 
 
