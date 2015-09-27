@@ -11,6 +11,7 @@ import java.net.ConnectException;
 import my.yandex.money.transfer.App;
 import my.yandex.money.transfer.R;
 import my.yandex.money.transfer.activities.hierarchy.ApiRequestsActivity;
+import my.yandex.money.transfer.activities.hierarchy.SecurityActivity;
 import my.yandex.money.transfer.utils.Crypto;
 import my.yandex.money.transfer.utils.Notifications;
 import my.yandex.money.transfer.utils.Preferences;
@@ -113,7 +114,10 @@ public class PinActivity extends ApiRequestsActivity {
                     if (pin.equals(userPin)) {
                         if (encryptAndSave(plainToken, pin)) {
                             App.setToken(plainToken);
-                            goToMyAccount();
+                            Intent intent = new Intent(PinActivity.this, AccountActivity.class);
+                            intent.putExtra(SecurityActivity.NO_SECURITY_CHECK, true);
+                            startActivity(intent);
+                            finish();
                         } else {
                             Notifications.showToUser(R.string.can_not_log_in);
                         }
@@ -191,20 +195,14 @@ public class PinActivity extends ApiRequestsActivity {
 
 
     private void pinCorrect() {
-        // TODO: go back if there is where to go back
-        goToMyAccount();
+        finish();
     }
+
 
     private void pinIncorrect() {
         changeState(PROVIDE_PIN);
         Notifications.showToUser(R.string.wrong_pin);
         // TODO: logout
-    }
-
-
-    private void goToMyAccount() {
-        startActivity(new Intent(PinActivity.this, AccountActivity.class));
-        finish();
     }
 
 

@@ -63,12 +63,12 @@ public abstract class ApiRequestsActivity extends TapTwiceToExitActivity impleme
 
     private void logOut(boolean revoke) {
         if (revoke) loader.revokeToken();
-        deleteLocalTokenCopy();
+        deleteTokenLocalCopy();
         goToSignIn();
     }
 
 
-    private void deleteLocalTokenCopy() {
+    private void deleteTokenLocalCopy() {
         Preferences.setEncryptedAccessToken(null);
         App.setToken(null);
     }

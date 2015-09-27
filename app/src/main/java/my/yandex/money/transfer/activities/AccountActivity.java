@@ -15,11 +15,12 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+import my.yandex.money.transfer.App;
 import my.yandex.money.transfer.R;
-import my.yandex.money.transfer.activities.hierarchy.ApiRequestsActivity;
+import my.yandex.money.transfer.activities.hierarchy.SecurityActivity;
 import my.yandex.money.transfer.utils.Preferences;
 
-public class AccountActivity extends ApiRequestsActivity implements OnRefreshListener {
+public class AccountActivity extends SecurityActivity implements OnRefreshListener {
     private static final Map<AccountStatus, Integer> ACCOUNT_STATUS_MAP = new HashMap<>();
 
     static {
@@ -41,6 +42,7 @@ public class AccountActivity extends ApiRequestsActivity implements OnRefreshLis
     private TextView balanceAvailable;
     private SwipeRefreshLayout refresher;
 
+    private boolean isAlreadyLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,32 @@ public class AccountActivity extends ApiRequestsActivity implements OnRefreshLis
 
         if (savedInstanceState == null) {
             login.setText(Preferences.getLogin());
-            loader.getAccountInfo();
+            if (App.hasToken()) initialLoading();
+            return;
         }
+
+        login.setText(savedInstanceState.getCharSequence(KEY_LOGIN));
+        accountNumber.setText(savedInstanceState.getCharSequence(KEY_ACCOUNT_NUMBER));
+        accountStatus.setText(savedInstanceState.getCharSequence(KEY_ACCOUNT_STATUS));
+        balance.setText(savedInstanceState.getCharSequence(KEY_BALANCE));
+        balanceAvailable.setText(savedInstanceState.getCharSequence(KEY_BALANCE_AVAILABLE));
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (balance.getText().toString().isEmpty() && App.hasToken()) {
+            initialLoading();
+        }
+    }
+
+
+    private void initialLoading() {
+        if (isAlreadyLoaded) return;
+        isAlreadyLoaded = true;
+        loader.getAccountInfo();
+        refresher.setRefreshing(true);
     }
 
 
@@ -95,17 +121,6 @@ public class AccountActivity extends ApiRequestsActivity implements OnRefreshLis
         outState.putCharSequence(KEY_ACCOUNT_STATUS, accountStatus.getText());
         outState.putCharSequence(KEY_BALANCE, balance.getText());
         outState.putCharSequence(KEY_BALANCE_AVAILABLE, balanceAvailable.getText());
-    }
-
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        login.setText(savedInstanceState.getCharSequence(KEY_LOGIN));
-        accountNumber.setText(savedInstanceState.getCharSequence(KEY_ACCOUNT_NUMBER));
-        accountStatus.setText(savedInstanceState.getCharSequence(KEY_ACCOUNT_STATUS));
-        balance.setText(savedInstanceState.getCharSequence(KEY_BALANCE));
-        balanceAvailable.setText(savedInstanceState.getCharSequence(KEY_BALANCE_AVAILABLE));
     }
 
 

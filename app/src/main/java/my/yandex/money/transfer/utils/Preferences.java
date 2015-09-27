@@ -67,6 +67,11 @@ public final class Preferences {
     }
 
 
+    public static boolean hasEncryptedAccessToken() {
+        return getEncryptedAccessToken() != null;
+    }
+
+
     public static String getEncryptedAccessToken() {
         return getPreferences().getString(KEY_ENCRYPTED_ACCESS_TOKEN, null);
     }

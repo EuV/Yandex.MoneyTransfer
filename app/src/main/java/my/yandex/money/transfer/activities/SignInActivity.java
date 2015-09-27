@@ -97,13 +97,10 @@ public class SignInActivity extends ApiRequestsActivity {
 
 
     private void signIn() {
-        String encryptedToken = Preferences.getEncryptedAccessToken();
-        if (encryptedToken == null) {
-            authorizeInWebView();
+        if (Preferences.hasEncryptedAccessToken()) {
+            startActivity(new Intent(this, AccountActivity.class));
         } else {
-            Intent intent = new Intent(this, PinActivity.class);
-            intent.putExtra(PinActivity.ACCESS_TOKEN_ENCRYPTED, encryptedToken);
-            startActivity(intent);
+            authorizeInWebView();
         }
     }
 
