@@ -32,4 +32,10 @@
     <string name="contacts">Contacts</string>
     <string name="goods_and_services">Goods and Services</string>
     <string name="button_transfer">Transfer money to another wallet</string>
+    <string name="recipient">Recipient</string>
+    <string name="amount_due">Total (fee 0.5%)</string>
+    <string name="amount">To be paid</string>
+    <string name="message">Message to recipient (optional)</string>
+    <string name="codepro">Security code</string>
+    <string name="expire_period">The number of days to receive the transfer</string>
 </resources>

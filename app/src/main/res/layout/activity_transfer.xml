@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_100">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_mail"
+            android:src="@drawable/ic_email_black_24dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@null"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_phone"
+            android:src="@drawable/ic_smartphone_black_24dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@null"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/button_mail"
+            android:layout_toStartOf="@id/button_mail" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_contact"
+            android:src="@drawable/ic_contacts_black_24dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@null"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/button_phone"
+            android:layout_toStartOf="@+id/button_phone" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_87"
+            android:id="@+id/input_to"
+            android:hint="@string/recipient"
+            android:singleLine="true"
+            android:layout_alignBottom="@id/button_contact"
+            android:layout_toLeftOf="@id/button_contact"
+            android:layout_alignParentLeft="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textColor="@color/black_87"
+            android:ems="5"
+            android:layout_marginTop="15dp"
+            android:id="@+id/input_amount_due"
+            android:layout_below="@id/button_mail"
+            android:layout_alignRight="@id/button_mail"
+            android:layout_alignEnd="@id/button_mail" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/amount_due"
+            android:layout_alignBaseline="@id/input_amount_due"
+            android:layout_toLeftOf="@id/input_amount_due"
+            android:layout_alignParentLeft="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textColor="@color/black_87"
+            android:ems="5"
+            android:layout_marginTop="15dp"
+            android:id="@+id/input_amount"
+            android:layout_below="@id/input_amount_due"
+            android:layout_alignRight="@id/button_mail"
+            android:layout_alignEnd="@id/button_mail" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/amount"
+            android:layout_alignBaseline="@id/input_amount"
+            android:layout_toLeftOf="@id/input_amount"
+            android:layout_alignParentLeft="true" />
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black_87"
+            android:id="@+id/input_message"
+            android:layout_marginTop="15dp"
+            android:hint="@string/message"
+            android:layout_below="@id/input_amount" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black_87"
+            android:layout_marginTop="15dp"
+            android:text="@string/codepro"
+            android:id="@+id/input_codepro"
+            android:layout_below="@id/input_message"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textColor="@color/black_87"
+            android:ems="5"
+            android:layout_marginTop="15dp"
+            android:id="@+id/input_expire_period"
+            android:layout_below="@id/input_codepro"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/expire_period"
+            android:layout_alignBaseline="@id/input_expire_period"
+            android:layout_toLeftOf="@id/input_expire_period"
+            android:layout_alignParentLeft="true" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seek_bar_expire_period"
+            android:layout_marginTop="32dp"
+            android:layout_below="@id/input_expire_period" />
+
+    </RelativeLayout>
+
+</ScrollView>

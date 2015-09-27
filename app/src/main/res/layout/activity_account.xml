@@ -14,6 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- I've understood CardViews are misplaced here in terms of Material Design, -->
+            <!-- but UI and UX are a giant task that are not paramount at the moment. -->
             <android.support.v7.widget.CardView style="@style/CardInfo">
 
                 <RelativeLayout

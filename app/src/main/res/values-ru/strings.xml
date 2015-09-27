@@ -32,4 +32,10 @@
     <string name="contacts">Контакты</string>
     <string name="goods_and_services">Товары и услуги</string>
     <string name="button_transfer">Перевести деньги на другой кошелёк</string>
+    <string name="recipient">Получатель</string>
+    <string name="amount_due">Сумма (комиссия 0,5%)</string>
+    <string name="amount">К оплате</string>
+    <string name="message">Сообщение получателю (не обязательно)</string>
+    <string name="codepro">Защитить кодом протекции</string>
+    <string name="expire_period">Количество дней на получение перевода</string>
 </resources>
