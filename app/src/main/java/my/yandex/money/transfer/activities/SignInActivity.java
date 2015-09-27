@@ -27,15 +27,18 @@ import my.yandex.money.transfer.utils.Notifications;
 import my.yandex.money.transfer.utils.Preferences;
 
 public class SignInActivity extends ApiRequestsActivity {
-    private static final int TAP_TO_EXIT_INTERVAL = 2000;
-
-    private long whenBackButtonWasPressed;
     private ProgressBar progressBar;
     private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getIntent().getBooleanExtra(EXIT, false)) {
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_sign_in);
 
         setupViews();
@@ -86,15 +89,10 @@ public class SignInActivity extends ApiRequestsActivity {
         if (webView.canGoBack()) {
             webView.goBack();
             return;
-        } else {
-            final long now = System.currentTimeMillis();
-            if (now > whenBackButtonWasPressed + TAP_TO_EXIT_INTERVAL) {
-                Notifications.showToUser(R.string.tap_to_exit);
-                whenBackButtonWasPressed = now;
-                return;
-            }
         }
-        super.onBackPressed();
+        if (shouldExit()) {
+            finish();
+        }
     }
 
 

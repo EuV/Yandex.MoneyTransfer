@@ -228,6 +228,14 @@ public class PinActivity extends ApiRequestsActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if (shouldExit()) {
+            shutdownApp();
+        }
+    }
+
+
     enum State {
         CREATE_PIN,
         CONFIRM_PIN,

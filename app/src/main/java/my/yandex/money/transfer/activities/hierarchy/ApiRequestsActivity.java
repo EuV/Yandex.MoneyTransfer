@@ -24,7 +24,7 @@ import my.yandex.money.transfer.ResponseWrapper;
 import my.yandex.money.transfer.activities.SignInActivity;
 import my.yandex.money.transfer.utils.Preferences;
 
-public abstract class ApiRequestsActivity extends LogActivity implements LoaderManager.LoaderCallbacks<Object> {
+public abstract class ApiRequestsActivity extends TapTwiceToExitActivity implements LoaderManager.LoaderCallbacks<Object> {
     private final String KEY_LAST_RESPONSE_HASH = TAG + ".KEY_LAST_RESPONSE_HASH";
 
     private long lastResponseHash;

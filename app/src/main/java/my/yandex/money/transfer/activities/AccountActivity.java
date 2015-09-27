@@ -151,4 +151,12 @@ public class AccountActivity extends ApiRequestsActivity implements OnRefreshLis
     public void onRefresh() {
         loader.getAccountInfo();
     }
+
+
+    @Override
+    public void onBackPressed() {
+        if (shouldExit()) {
+            shutdownApp();
+        }
+    }
 }
