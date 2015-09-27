@@ -25,4 +25,11 @@
     <string name="balance">Balance:</string>
     <string name="available">Available:</string>
     <string name="rub">&#160;Rub.</string>
+    <string name="action_options">Options</string>
+    <string name="action_transfer">Transfer</string>
+    <string name="action_history">History</string>
+    <string name="action_contacts">Contacts</string>
+    <string name="action_goods_and_services">Goods and Services</string>
+    <string name="action_exit">Exit</string>
+    <string name="button_transfer">Transfer money to another wallet</string>
 </resources>

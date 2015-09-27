@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.Menu;
 import android.widget.TextView;
 import com.yandex.money.api.methods.AccountInfo;
 import com.yandex.money.api.model.AccountStatus;
@@ -51,6 +52,13 @@ public class AccountActivity extends ApiRequestsActivity implements OnRefreshLis
             login.setText(Preferences.getLogin());
             loader.getAccountInfo();
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.account_activity_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 

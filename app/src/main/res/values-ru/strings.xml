@@ -25,4 +25,11 @@
     <string name="balance">Баланс:</string>
     <string name="available">Доступно:</string>
     <string name="rub">&#160;Руб.</string>
+    <string name="action_options">Опции</string>
+    <string name="action_transfer">Перевод</string>
+    <string name="action_history">История</string>
+    <string name="action_contacts">Контакты</string>
+    <string name="action_goods_and_services">Товары и услуги</string>
+    <string name="action_exit">Выход</string>
+    <string name="button_transfer">Перевести деньги на другой кошелёк</string>
 </resources>
