@@ -106,7 +106,6 @@ public class SignInActivity extends ApiRequestsActivity {
             Intent intent = new Intent(this, PinActivity.class);
             intent.putExtra(PinActivity.ACCESS_TOKEN_ENCRYPTED, encryptedToken);
             startActivity(intent);
-            finish();
         }
     }
 
@@ -176,7 +175,6 @@ public class SignInActivity extends ApiRequestsActivity {
             Intent intent = new Intent(SignInActivity.this, PinActivity.class);
             intent.putExtra(PinActivity.ACCESS_TOKEN_PLAIN, token.accessToken);
             startActivity(intent);
-            finish();
         } else {
             logError(token.error);
             authorizationFailed();

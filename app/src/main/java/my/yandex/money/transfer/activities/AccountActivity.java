@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import com.yandex.money.api.methods.AccountInfo;
 import com.yandex.money.api.model.AccountStatus;
@@ -59,6 +60,30 @@ public class AccountActivity extends ApiRequestsActivity implements OnRefreshLis
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.account_activity_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_transfer:
+                return true;
+
+            case R.id.action_history:
+                return true;
+
+            case R.id.action_contacts:
+                return true;
+
+            case R.id.action_goods_and_services:
+                return true;
+
+            case R.id.action_exit:
+                logOut();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

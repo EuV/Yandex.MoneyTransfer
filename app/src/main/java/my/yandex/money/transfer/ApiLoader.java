@@ -120,6 +120,12 @@ public class ApiLoader extends Loader<Object> {
     }
 
 
+    public void revokeToken() {
+        request = new Token.Revoke();
+        load();
+    }
+
+
     private void load() {
         if (App.hasToken()) session.setAccessToken(App.getToken());
         forceLoad();

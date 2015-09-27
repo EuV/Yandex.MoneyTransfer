@@ -1,9 +1,11 @@
 package my.yandex.money.transfer.activities.hierarchy;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import com.yandex.money.api.exceptions.InvalidTokenException;
 import com.yandex.money.api.methods.AccountInfo;
 import com.yandex.money.api.methods.AuxToken;
 import com.yandex.money.api.methods.IncomingTransferAccept;
@@ -17,7 +19,10 @@ import com.yandex.money.api.methods.RequestExternalPayment;
 import com.yandex.money.api.methods.RequestPayment;
 import com.yandex.money.api.methods.Token;
 import my.yandex.money.transfer.ApiLoader;
+import my.yandex.money.transfer.App;
 import my.yandex.money.transfer.ResponseWrapper;
+import my.yandex.money.transfer.activities.SignInActivity;
+import my.yandex.money.transfer.utils.Preferences;
 
 public abstract class ApiRequestsActivity extends LogActivity implements LoaderManager.LoaderCallbacks<Object> {
     private final String KEY_LAST_RESPONSE_HASH = TAG + ".KEY_LAST_RESPONSE_HASH";
@@ -51,6 +56,31 @@ public abstract class ApiRequestsActivity extends LogActivity implements LoaderM
     }
 
 
+    protected void logOut() {
+        logOut(true);
+    }
+
+
+    private void logOut(boolean revoke) {
+        if (revoke) loader.revokeToken();
+        deleteLocalTokenCopy();
+        goToSignIn();
+    }
+
+
+    private void deleteLocalTokenCopy() {
+        Preferences.setEncryptedAccessToken(null);
+        App.setToken(null);
+    }
+
+
+    private void goToSignIn() {
+        Intent intent = new Intent(this, SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+
     @Override
     public Loader<Object> onCreateLoader(int id, Bundle args) {
         return new ApiLoader(this);
@@ -72,7 +102,8 @@ public abstract class ApiRequestsActivity extends LogActivity implements LoaderM
         lastResponseHash = wrapper.hash;
 
         Object r = wrapper.response;
-        if (r instanceof Exception) onLoadFailed((Exception) r);
+        if (r instanceof InvalidTokenException) logOut(false);
+        else if (r instanceof Exception) onLoadFailed((Exception) r);
         else if (r instanceof AccountInfo) onAccountInfoLoaded((AccountInfo) r);
         else if (r instanceof AuxToken) onAuxTokenLoaded((AuxToken) r);
         else if (r instanceof IncomingTransferAccept) onIncomingTransferAcceptLoaded((IncomingTransferAccept) r);
@@ -85,7 +116,6 @@ public abstract class ApiRequestsActivity extends LogActivity implements LoaderM
         else if (r instanceof RequestExternalPayment) onRequestExternalPaymentLoaded((RequestExternalPayment) r);
         else if (r instanceof RequestPayment) onRequestPaymentLoaded((RequestPayment) r);
         else if (r instanceof Token) onTokenLoaded((Token) r);
-        else if (r instanceof Void) onTokenRevoked((Void) r);
         else onObjectLoaded(r);
     }
 
@@ -114,8 +144,6 @@ public abstract class ApiRequestsActivity extends LogActivity implements LoaderM
     protected void onRequestPaymentLoaded(RequestPayment requestPayment) { /* Stub! */ }
 
     protected void onTokenLoaded(Token token) { /* Stub! */ }
-
-    protected void onTokenRevoked(Void v) { /* Stub! */ }
 
     protected void onObjectLoaded(Object o) {
         logError("Unexpected object has been received: " + o);
