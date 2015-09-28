@@ -1,15 +1,20 @@
 package my.yandex.money.transfer.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import java.math.BigDecimal;
 import my.yandex.money.transfer.R;
@@ -17,6 +22,11 @@ import my.yandex.money.transfer.activities.hierarchy.SecurityActivity;
 import my.yandex.money.transfer.utils.EditTextInputFilter;
 
 public class TransferActivity extends SecurityActivity {
+    private static final String KEY_IN_PROGRESS = "in_progress";
+
+    private ImageButton buttonContact;
+    private ImageButton buttonPhone;
+    private ImageButton buttonEmail;
     private EditText to;
     private EditText amountDue;
     private EditText amount;
@@ -29,17 +39,54 @@ public class TransferActivity extends SecurityActivity {
     private boolean changesFromAmount = false;
     private boolean changesFromAmountDue = false;
 
+    private boolean inProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer);
+
+        if (savedInstanceState != null) {
+            inProgress = savedInstanceState.getBoolean(KEY_IN_PROGRESS, false);
+        }
 
         setUpViews();
         setUpCallbacks();
     }
 
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_IN_PROGRESS, inProgress);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.transfer_activity_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_send) {
+            if (inProgress) return true;
+            inProgress = true;
+
+            // TODO
+            toggleControlsAccessibility(false);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     private void setUpViews() {
+        buttonContact = (ImageButton) findViewById(R.id.button_contact);
+        buttonPhone = (ImageButton) findViewById(R.id.button_phone);
+        buttonEmail = (ImageButton) findViewById(R.id.button_email);
         to = (EditText) findViewById(R.id.input_to);
         amountDue = (EditText) findViewById(R.id.input_amount_due);
         amount = (EditText) findViewById(R.id.input_amount);
@@ -50,6 +97,7 @@ public class TransferActivity extends SecurityActivity {
         expirePeriodDescription = (TextView) findViewById(R.id.expire_period_description);
 
         toggleSecurityDetailsVisibility(codepro.isChecked());
+        toggleControlsAccessibility(!inProgress);
     }
 
 
@@ -88,7 +136,7 @@ public class TransferActivity extends SecurityActivity {
         });
 
 
-        expirePeriodSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        expirePeriodSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
@@ -151,6 +199,20 @@ public class TransferActivity extends SecurityActivity {
         }
 
         return second;
+    }
+
+
+    private void toggleControlsAccessibility(boolean enabled) {
+        to.setEnabled(enabled);
+        buttonContact.setEnabled(enabled);
+        buttonPhone.setEnabled(enabled);
+        buttonEmail.setEnabled(enabled);
+        amountDue.setEnabled(enabled);
+        amount.setEnabled(enabled);
+        message.setEnabled(enabled);
+        codepro.setEnabled(enabled);
+        expirePeriod.setEnabled(enabled);
+        expirePeriodSeekBar.setEnabled(enabled);
     }
 
 
