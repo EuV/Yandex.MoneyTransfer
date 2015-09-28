@@ -98,7 +98,6 @@
             android:layout_toLeftOf="@id/input_amount"
             android:layout_alignParentLeft="true" />
 
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,6 +126,7 @@
             android:inputType="number"
             android:textColor="@color/black_87"
             android:ems="5"
+            android:maxLength="3"
             android:layout_marginTop="15dp"
             android:id="@+id/input_expire_period"
             android:layout_below="@id/input_codepro"
@@ -136,6 +136,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/expire_period_description"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/expire_period"
             android:layout_alignBaseline="@id/input_expire_period"
@@ -147,6 +148,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/seek_bar_expire_period"
             android:layout_marginTop="32dp"
+            android:max="364"
             android:layout_below="@id/input_expire_period" />
 
     </RelativeLayout>
