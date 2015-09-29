@@ -49,4 +49,5 @@
     <string name="limit_exceeded">Превышен лимит на выполнение операций</string>
     <string name="transfer_refuse">В переводе отказано</string>
     <string name="default_transfer_error_message">Что-то пошло не так; повторите попытку позднее</string>
+    <string name="load_history_failed">Не удалось загрузить историю операций</string>
 </resources>

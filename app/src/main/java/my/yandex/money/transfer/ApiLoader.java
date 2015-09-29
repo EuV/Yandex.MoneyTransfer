@@ -5,6 +5,7 @@ import android.content.Loader;
 import android.os.Handler;
 import android.os.Looper;
 import com.yandex.money.api.methods.AccountInfo;
+import com.yandex.money.api.methods.OperationHistory;
 import com.yandex.money.api.methods.ProcessPayment;
 import com.yandex.money.api.methods.RequestPayment;
 import com.yandex.money.api.methods.Token;
@@ -143,6 +144,20 @@ public class ApiLoader extends Loader<Object> {
 
     public void processPayment(String requestId) {
         request = new ProcessPayment.Request(requestId);
+        load();
+    }
+
+
+    public void getOperationHistory() {
+        getOperationHistory("0");
+    }
+
+
+    public void getOperationHistory(String startRecord) {
+        request = new OperationHistory.Request.Builder()
+            .setDetails(true)
+            .setStartRecord(startRecord)
+            .createRequest();
         load();
     }
 
