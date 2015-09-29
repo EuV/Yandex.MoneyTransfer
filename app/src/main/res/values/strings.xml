@@ -38,4 +38,15 @@
     <string name="message">Message to recipient (optional)</string>
     <string name="codepro">Security code</string>
     <string name="expire_period">The number of days to receive the transfer</string>
+    <string name="incorrect_recipient">Incorrect recipient</string>
+    <string name="incorrect_amount">Incorrect amount value</string>
+    <string name="incorrect_expire_period">Validity of the protection code must be a number from 1 to 365</string>
+    <string name="transfer_success">Transfer completed successfully!</string>
+    <string name="transfer_in_progress">Transfer is not complete. Please try again later</string>
+    <string name="payee_not_found">The recipient of the transfer is not found</string>
+    <string name="not_enough_funds">Not enough funds</string>
+    <string name="account_blocked">Your account is blocked</string>
+    <string name="limit_exceeded">Limit to perform operations is exceeded</string>
+    <string name="transfer_refuse">Transfer is refused</string>
+    <string name="default_transfer_error_message">Something is wrong; try again later</string>
 </resources>

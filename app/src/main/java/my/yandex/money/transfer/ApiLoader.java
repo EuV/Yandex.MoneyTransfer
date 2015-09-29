@@ -5,13 +5,17 @@ import android.content.Loader;
 import android.os.Handler;
 import android.os.Looper;
 import com.yandex.money.api.methods.AccountInfo;
+import com.yandex.money.api.methods.ProcessPayment;
+import com.yandex.money.api.methods.RequestPayment;
 import com.yandex.money.api.methods.Token;
+import com.yandex.money.api.methods.params.P2pTransferParams;
 import com.yandex.money.api.model.Scope;
 import com.yandex.money.api.net.ApiRequest;
 import com.yandex.money.api.net.DefaultApiClient;
 import com.yandex.money.api.net.OAuth2Session;
 import com.yandex.money.api.net.OnResponseReady;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.ConnectException;
 import my.yandex.money.transfer.utils.Connections;
 import my.yandex.money.transfer.utils.Notifications;
@@ -122,6 +126,23 @@ public class ApiLoader extends Loader<Object> {
 
     public void revokeToken() {
         request = new Token.Revoke();
+        load();
+    }
+
+
+    public void requestPayment(String to, BigDecimal amountDue, String message, boolean codepro, Integer expirePeriod) {
+        P2pTransferParams.Builder builder = new P2pTransferParams.Builder(to)
+            .setAmountDue(amountDue)
+            .setMessage(message)
+            .setCodepro(codepro)
+            .setExpirePeriod(expirePeriod);
+        request = RequestPayment.Request.newInstance(builder.build());
+        load();
+    }
+
+
+    public void processPayment(String requestId) {
+        request = new ProcessPayment.Request(requestId);
         load();
     }
 

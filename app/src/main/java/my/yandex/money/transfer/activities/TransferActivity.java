@@ -16,10 +16,16 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import com.yandex.money.api.methods.ProcessPayment;
+import com.yandex.money.api.methods.RequestPayment;
+import com.yandex.money.api.model.Error;
+import com.yandex.money.api.utils.Patterns;
 import java.math.BigDecimal;
+import java.net.ConnectException;
 import my.yandex.money.transfer.R;
 import my.yandex.money.transfer.activities.hierarchy.SecurityActivity;
 import my.yandex.money.transfer.utils.EditTextInputFilter;
+import my.yandex.money.transfer.utils.Notifications;
 
 public class TransferActivity extends SecurityActivity {
     private static final String KEY_IN_PROGRESS = "in_progress";
@@ -73,13 +79,154 @@ public class TransferActivity extends SecurityActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_send) {
             if (inProgress) return true;
-            inProgress = true;
-
-            // TODO
-            toggleControlsAccessibility(false);
+            if (requestPayment()) {
+                inProgress = true;
+                toggleControlsAccessibility(false);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private boolean requestPayment() {
+        boolean toMatchesPattern = false;
+        String toValue = to.getText().toString();
+        if (!toValue.isEmpty()) {
+            toMatchesPattern = toValue.matches(Patterns.ACCOUNT)
+                || toValue.matches(Patterns.PHONE)
+                || toValue.matches(Patterns.YANDEX)
+                || toValue.matches(Patterns.EMAIL);
+        }
+
+        if (!toMatchesPattern) {
+            Notifications.showToUser(R.string.incorrect_recipient);
+            return false;
+        }
+
+        BigDecimal amountDueValue = BigDecimal.ZERO;
+        try {
+            amountDueValue = new BigDecimal(amountDue.getText().toString());
+        } catch (NumberFormatException ignored) { /* */ }
+
+        if (amountDueValue.compareTo(BigDecimal.ZERO) == 0) {
+            Notifications.showToUser(R.string.incorrect_amount);
+            return false;
+        }
+
+        String messageValue = message.getText().toString();
+        if (messageValue.isEmpty()) messageValue = null;
+
+        boolean codeproValue = codepro.isChecked();
+
+        Integer expirePeriodValue = null;
+        if (codeproValue) {
+            try {
+                expirePeriodValue = Integer.valueOf(expirePeriod.getText().toString());
+                if (expirePeriodValue < 1 || 365 < expirePeriodValue) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException ignored) {
+                Notifications.showToUser(R.string.incorrect_expire_period);
+                return false;
+            }
+        }
+
+        loader.requestPayment(toValue, amountDueValue, messageValue, codeproValue, expirePeriodValue);
+        return true;
+    }
+
+
+    @Override
+    protected void onLoadFailed(Exception exception) {
+        boolean connectionProblem = (exception instanceof ConnectException);
+        transferFailed(!connectionProblem);
+    }
+
+
+    @Override
+    protected void onRequestPaymentLoaded(RequestPayment requestPayment) {
+        switch (requestPayment.status) {
+            case SUCCESS:
+                loader.processPayment(requestPayment.requestId);
+                break;
+
+            case REFUSED:
+                handlePaymentError(requestPayment.error);
+                transferFailed(false);
+                break;
+
+            // Not supported yet
+            case HOLD_FOR_PICKUP:
+                transferFailed(true);
+                break;
+
+            case UNKNOWN:
+                transferFailed(true);
+                break;
+        }
+    }
+
+
+    @Override
+    protected void onProcessPaymentLoaded(ProcessPayment processPayment) {
+        switch (processPayment.status) {
+
+            // TODO: goToOperationDetailsActivity();
+            case SUCCESS:
+                Notifications.showToUser(R.string.transfer_success);
+                toggleControlsAccessibility(true);
+                inProgress = false;
+                break;
+
+            case REFUSED:
+                handlePaymentError(processPayment.error);
+                transferFailed(false);
+                break;
+
+            // TODO: Proceed this case automatically
+            case IN_PROGRESS:
+                Notifications.showToUser(R.string.transfer_in_progress);
+                transferFailed(false);
+                break;
+
+            case UNKNOWN:
+                transferFailed(true);
+                break;
+        }
+    }
+
+
+    private void handlePaymentError(Error error) {
+        switch (error) {
+            case ILLEGAL_PARAM_TO:
+            case PAYEE_NOT_FOUND:
+                Notifications.showToUser(R.string.payee_not_found);
+                break;
+
+            case NOT_ENOUGH_FUNDS:
+                Notifications.showToUser(R.string.not_enough_funds);
+                break;
+
+            case ACCOUNT_BLOCKED:
+                Notifications.showToUser(R.string.account_blocked);
+                break;
+
+            case LIMIT_EXCEEDED:
+                Notifications.showToUser(R.string.limit_exceeded);
+                break;
+
+            default:
+                Notifications.showToUser(R.string.transfer_refuse);
+                break;
+        }
+    }
+
+
+    private void transferFailed(boolean showDefaultErrorMessage) {
+        if (showDefaultErrorMessage) Notifications.showToUser(R.string.default_transfer_error_message);
+        toggleControlsAccessibility(true);
+        inProgress = false;
     }
 
 

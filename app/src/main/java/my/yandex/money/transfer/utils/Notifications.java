@@ -20,7 +20,7 @@ public final class Notifications {
     }
 
     public static void showToUser(final int resId, final Object... args) {
-        showToUser(String.format(context.getString(resId), args));
+        showToUser(context.getString(resId, args));
     }
 
     public static void showToUser(final String msg) {

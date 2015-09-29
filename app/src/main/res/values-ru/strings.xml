@@ -38,4 +38,15 @@
     <string name="message">Сообщение получателю (не обязательно)</string>
     <string name="codepro">Защитить кодом протекции</string>
     <string name="expire_period">Количество дней на получение перевода</string>
+    <string name="incorrect_recipient">Неправильно указан получатель</string>
+    <string name="incorrect_amount">Неправильная сумма перевода</string>
+    <string name="incorrect_expire_period">Срок действия кода протекции должен быть числом от 1 до 365</string>
+    <string name="transfer_success">Перевод успешно выполнен!</string>
+    <string name="transfer_in_progress">Перевод не завершён. Повторите попытку позднее</string>
+    <string name="payee_not_found">Получатель перевода не найден</string>
+    <string name="not_enough_funds">Недостаточно средств</string>
+    <string name="account_blocked">Ваш счет заблокирован</string>
+    <string name="limit_exceeded">Превышен лимит на выполнение операций</string>
+    <string name="transfer_refuse">В переводе отказано</string>
+    <string name="default_transfer_error_message">Что-то пошло не так; повторите попытку позднее</string>
 </resources>
