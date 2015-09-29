@@ -8,22 +8,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.yandex.money.api.model.Operation;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static com.yandex.money.api.model.Operation.Direction.INCOMING;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.OperationViewHolder> {
-    private List<Operation> operations = new ArrayList<>();
-    private Set<String> savedOperationIds = new HashSet<>();
+    private ArrayList<OperationDisplayed> operations = new ArrayList<>();
+
+    public void setOperations(ArrayList<OperationDisplayed> operations) {
+        this.operations = operations;
+    }
+
+
+    public ArrayList<OperationDisplayed> getOperations() {
+        return operations;
+    }
 
 
     public void addOperations(List<Operation> newOperations) {
         for (Operation operation : newOperations) {
-            if (!savedOperationIds.contains(operation.operationId)) {
-                savedOperationIds.add(operation.operationId);
-                operations.add(operation);
+            OperationDisplayed op = new OperationDisplayed(operation);
+            if (!operations.contains(op)) {
+                operations.add(op);
                 notifyItemRangeInserted(operations.size(), 1);
             }
         }
@@ -39,12 +43,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Operatio
 
     @Override
     public void onBindViewHolder(OperationViewHolder holder, int i) {
-        holder.title.setText(operations.get(i).title);
-        holder.amount.setText(operations.get(i).amount.toString());
-        if (operations.get(i).direction == INCOMING) {
-            holder.direction.setImageResource(R.drawable.ic_keyboard_tab_black_24dp_left);
-        } else {
+        OperationDisplayed operation = operations.get(i);
+        holder.title.setText(operation.title);
+        holder.amount.setText(operation.amount);
+        if (operation.isIncoming) {
             holder.direction.setImageResource(R.drawable.ic_keyboard_tab_black_24dp);
+        } else {
+            holder.direction.setImageResource(R.drawable.ic_keyboard_tab_black_24dp_left);
         }
     }
 
