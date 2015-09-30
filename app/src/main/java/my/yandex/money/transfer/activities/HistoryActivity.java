@@ -37,7 +37,12 @@ public class HistoryActivity extends SecurityActivity implements OnRefreshListen
         historyAdapter = new HistoryAdapter();
         if (savedInstanceState == null) {
             HistoryHelper.load(this);
-            refresher.setRefreshing(true);
+            refresher.post(new Runnable() {
+                @Override
+                public void run() {
+                    refresher.setRefreshing(true);
+                }
+            });
         } else {
             historyAdapter.setOperations(savedInstanceState.<OperationSub>getParcelableArrayList(KEY_OPERATIONS));
             isAlreadyLoadedFromWeb = savedInstanceState.getBoolean(KEY_IS_ALREADY_LOADED_FROM_WEB);
