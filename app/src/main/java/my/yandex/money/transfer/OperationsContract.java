@@ -6,6 +6,7 @@ public class OperationsContract {
     public static final String SQL_CREATE_TABLE =
         "CREATE TABLE " + Operations.TABLE_NAME + " (" +
             Operations._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            Operations.LOGIN + " TEXT," +
             Operations.OPERATION_ID + " TEXT UNIQUE," +
             Operations.TITLE + " TEXT NOT NULL," +
             Operations.AMOUNT + " TEXT NOT NULL," +
@@ -18,6 +19,7 @@ public class OperationsContract {
     public static abstract class Operations implements BaseColumns {
         public static final String TABLE_NAME = "operations";
 
+        public static final String LOGIN = "login";
         public static final String OPERATION_ID = "operation_id";
         public static final String TITLE = "title";
         public static final String AMOUNT = "amount";

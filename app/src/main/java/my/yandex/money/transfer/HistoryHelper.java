@@ -10,6 +10,7 @@ import com.yandex.money.api.model.Operation;
 import java.util.ArrayList;
 import java.util.List;
 import my.yandex.money.transfer.OperationsContract.Operations;
+import my.yandex.money.transfer.utils.Preferences;
 
 import static com.yandex.money.api.model.Operation.Direction.INCOMING;
 
@@ -41,9 +42,11 @@ public class HistoryHelper {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            String login = Preferences.getLogin();
             SQLiteDatabase db = new DBHelper(context).getWritableDatabase();
             for (Operation operation : operations) {
                 ContentValues val = new ContentValues();
+                val.put(Operations.LOGIN, login);
                 val.put(Operations.TITLE, operation.title);
                 val.put(Operations.AMOUNT, operation.amount.toString());
                 val.put(Operations.OPERATION_ID, operation.operationId);
@@ -76,7 +79,8 @@ public class HistoryHelper {
         protected ArrayList<OperationSub> doInBackground(Void... params) {
             SQLiteDatabase db = new DBHelper(context).getReadableDatabase();
             ArrayList<OperationSub> operations = new ArrayList<>();
-            Cursor cursor = db.query(Operations.TABLE_NAME, Operations.PROJECTION, null, null, null, null, Operations.DATE_TIME);
+            String selection = Operations.LOGIN + " = '" + Preferences.getLogin() + "'";
+            Cursor cursor = db.query(Operations.TABLE_NAME, Operations.PROJECTION, selection, null, null, null, Operations.DATE_TIME);
             try {
                 if (!cursor.moveToLast()) return operations;
                 do {
@@ -110,7 +114,7 @@ public class HistoryHelper {
 
 
     private static class DBHelper extends SQLiteOpenHelper {
-        static final int DATABASE_VERSION = 1;
+        static final int DATABASE_VERSION = 2;
         static final String DATABASE_NAME = "Operations.db";
 
         public DBHelper(Context context) {
@@ -126,6 +130,11 @@ public class HistoryHelper {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL(OperationsContract.SQL_DROP_TABLE);
             onCreate(db);
+        }
+
+        @Override
+        public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            onUpgrade(db, oldVersion, newVersion);
         }
     }
 

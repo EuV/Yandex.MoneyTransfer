@@ -6,10 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.yandex.money.api.model.Operation;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.OperationViewHolder> {
     private ArrayList<OperationSub> operations = new ArrayList<>();
