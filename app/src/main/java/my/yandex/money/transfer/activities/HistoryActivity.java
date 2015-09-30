@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.yandex.money.api.methods.OperationHistory;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import my.yandex.money.transfer.HistoryAdapter;
 import my.yandex.money.transfer.HistoryHelper;
@@ -37,12 +36,7 @@ public class HistoryActivity extends SecurityActivity implements OnRefreshListen
         historyAdapter = new HistoryAdapter();
         if (savedInstanceState == null) {
             HistoryHelper.load(this);
-            refresher.post(new Runnable() {
-                @Override
-                public void run() {
-                    refresher.setRefreshing(true);
-                }
-            });
+            animateRefreshing(true);
         } else {
             historyAdapter.setOperations(savedInstanceState.<OperationSub>getParcelableArrayList(KEY_OPERATIONS));
             isAlreadyLoadedFromWeb = savedInstanceState.getBoolean(KEY_IS_ALREADY_LOADED_FROM_WEB);
@@ -74,7 +68,7 @@ public class HistoryActivity extends SecurityActivity implements OnRefreshListen
             isAlreadyLoadedFromWeb = true;
         } else {
             historyAdapter.setOperations(operations);
-            refresher.setRefreshing(false);
+            animateRefreshing(false);
         }
     }
 
@@ -102,7 +96,6 @@ public class HistoryActivity extends SecurityActivity implements OnRefreshListen
      */
     @Override
     protected void onLoadFailed(Exception exception) {
-        if (exception instanceof ConnectException) return;
         loadHistoryFailed();
     }
 
@@ -123,12 +116,26 @@ public class HistoryActivity extends SecurityActivity implements OnRefreshListen
 
     private void loadHistoryFailed() {
         Notifications.showToUser(R.string.load_history_failed);
-        refresher.setRefreshing(false);
+        animateRefreshing(false);
     }
 
 
     @Override
     public void onRefresh() {
         loader.getOperationHistory();
+    }
+
+
+    /**
+     * This WA is needed since SwipeRefreshLayout tends to miss
+     * direct call of setRefreshing() when activity starts.
+     */
+    private void animateRefreshing(final boolean refreshing) {
+        refresher.post(new Runnable() {
+            @Override
+            public void run() {
+                refresher.setRefreshing(refreshing);
+            }
+        });
     }
 }
