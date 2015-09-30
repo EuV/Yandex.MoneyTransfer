@@ -382,4 +382,9 @@ public class TransferActivity extends SecurityActivity {
         @Override
         public void afterTextChanged(Editable s) { /* Stub! */ }
     }
+
+
+    public void shamefulStub(View v) {
+        Notifications.showToUser("Not supported yet");
+    }
 }

@@ -49,5 +49,5 @@
     <string name="limit_exceeded">Limit to perform operations is exceeded</string>
     <string name="transfer_refuse">Transfer is refused</string>
     <string name="default_transfer_error_message">Something is wrong; try again later</string>
-    <string name="load_history_failed">Не удалось загрузить историю операций</string>
+    <string name="load_history_failed">Unable to download transaction history</string>
 </resources>
