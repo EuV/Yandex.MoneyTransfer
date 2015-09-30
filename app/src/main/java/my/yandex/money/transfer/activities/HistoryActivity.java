@@ -8,29 +8,39 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.yandex.money.api.methods.OperationHistory;
 import java.net.ConnectException;
+import java.util.ArrayList;
 import my.yandex.money.transfer.HistoryAdapter;
-import my.yandex.money.transfer.OperationDisplayed;
+import my.yandex.money.transfer.HistoryHelper;
+import my.yandex.money.transfer.OperationSub;
 import my.yandex.money.transfer.R;
 import my.yandex.money.transfer.activities.hierarchy.SecurityActivity;
 import my.yandex.money.transfer.utils.Notifications;
 
-public class HistoryActivity extends SecurityActivity implements OnRefreshListener {
+public class HistoryActivity extends SecurityActivity implements OnRefreshListener, HistoryHelper.OnDBOperationPerformed {
     private static final String KEY_OPERATIONS = "key_operations";
+    private static final String KEY_IS_ALREADY_LOADED_FROM_WEB = "key_is_already_loaded_from_web";
 
     private SwipeRefreshLayout refresher;
     private HistoryAdapter historyAdapter;
 
+    private boolean isAlreadyLoadedFromWeb = false;
+    private String nextRecord = null;
+
     @Override
-    protected void onCreate(Bundle state) {
-        super.onCreate(state);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
         refresher = (SwipeRefreshLayout) findViewById(R.id.refresh);
         refresher.setOnRefreshListener(this);
 
         historyAdapter = new HistoryAdapter();
-        if (state != null) {
-            historyAdapter.setOperations(state.<OperationDisplayed>getParcelableArrayList(KEY_OPERATIONS));
+        if (savedInstanceState == null) {
+            HistoryHelper.load(this);
+            refresher.setRefreshing(true);
+        } else {
+            historyAdapter.setOperations(savedInstanceState.<OperationSub>getParcelableArrayList(KEY_OPERATIONS));
+            isAlreadyLoadedFromWeb = savedInstanceState.getBoolean(KEY_IS_ALREADY_LOADED_FROM_WEB);
         }
 
         RecyclerView historyView = (RecyclerView) findViewById(R.id.history_view);
@@ -43,37 +53,72 @@ public class HistoryActivity extends SecurityActivity implements OnRefreshListen
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(KEY_OPERATIONS, historyAdapter.getOperations());
+        outState.putBoolean(KEY_IS_ALREADY_LOADED_FROM_WEB, isAlreadyLoadedFromWeb);
     }
 
 
+    /**
+     * Called when the history of operations is loaded from db.
+     * In case it contains nothing, initiates loading from web,
+     * otherwise sends it to adapter.
+     */
+    @Override
+    public void onOperationsLoadedFromDB(ArrayList<OperationSub> operations) {
+        if (operations.isEmpty() && !isAlreadyLoadedFromWeb) {
+            loader.getOperationHistory();
+            isAlreadyLoadedFromWeb = true;
+        } else {
+            historyAdapter.setOperations(operations);
+            refresher.setRefreshing(false);
+        }
+    }
+
+
+    /**
+     * Called when Operations are stored in DB.
+     * If there's no necessity in further downloading history,
+     * initiates loading of entire ordered operations list.
+     *
+     * @param furtherUpdateNeeded indicates that there is no conflicts (duplicates) while storing into DB,
+     *                            and therefore it's needed to continue loading from web (if possible)
+     */
+    @Override
+    public void onOperationsStoredInDB(boolean furtherUpdateNeeded) {
+        if (furtherUpdateNeeded && nextRecord != null) {
+            loader.getOperationHistory(nextRecord);
+        } else {
+            HistoryHelper.load(this);
+        }
+    }
+
+
+    /**
+     * Called when an exception occurred while loading from web.
+     */
     @Override
     protected void onLoadFailed(Exception exception) {
-        refresher.setRefreshing(false);
         if (exception instanceof ConnectException) return;
         loadHistoryFailed();
     }
 
 
+    /**
+     * Called when some part of history is loaded from web.
+     */
     @Override
     protected void onOperationHistoryLoaded(OperationHistory operationHistory) {
-        if (operationHistory.error != null) {
-            loadHistoryFailed();
-            refresher.setRefreshing(false);
-            return;
-        }
-
-        historyAdapter.addOperations(operationHistory.operations);
-
-        if (operationHistory.nextRecord != null) {
-            loader.getOperationHistory(operationHistory.nextRecord);
+        if (operationHistory.error == null) {
+            HistoryHelper.save(this, operationHistory.operations);
+            nextRecord = operationHistory.nextRecord;
         } else {
-            refresher.setRefreshing(false);
+            loadHistoryFailed();
         }
     }
 
 
     private void loadHistoryFailed() {
         Notifications.showToUser(R.string.load_history_failed);
+        refresher.setRefreshing(false);
     }
 
 

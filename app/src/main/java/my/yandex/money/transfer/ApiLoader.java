@@ -156,6 +156,7 @@ public class ApiLoader extends Loader<Object> {
     public void getOperationHistory(String startRecord) {
         request = new OperationHistory.Request.Builder()
             .setDetails(true)
+            .setRecords(100)
             .setStartRecord(startRecord)
             .createRequest();
         load();

@@ -34,5 +34,6 @@ public class App extends Application {
         Preferences.init(context);
         Notifications.init(context);
         Connections.init(context);
+        HistoryHelper.init(context);
     }
 }

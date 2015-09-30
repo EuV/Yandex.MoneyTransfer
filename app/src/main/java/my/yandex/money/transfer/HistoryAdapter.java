@@ -9,28 +9,19 @@ import android.widget.TextView;
 import com.yandex.money.api.model.Operation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.OperationViewHolder> {
-    private ArrayList<OperationDisplayed> operations = new ArrayList<>();
+    private ArrayList<OperationSub> operations = new ArrayList<>();
 
-    public void setOperations(ArrayList<OperationDisplayed> operations) {
+    public void setOperations(ArrayList<OperationSub> operations) {
         this.operations = operations;
+        notifyDataSetChanged();
     }
 
 
-    public ArrayList<OperationDisplayed> getOperations() {
+    public ArrayList<OperationSub> getOperations() {
         return operations;
-    }
-
-
-    public void addOperations(List<Operation> newOperations) {
-        for (Operation operation : newOperations) {
-            OperationDisplayed op = new OperationDisplayed(operation);
-            if (!operations.contains(op)) {
-                operations.add(op);
-                notifyItemRangeInserted(operations.size(), 1);
-            }
-        }
     }
 
 
@@ -43,7 +34,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Operatio
 
     @Override
     public void onBindViewHolder(OperationViewHolder holder, int i) {
-        OperationDisplayed operation = operations.get(i);
+        OperationSub operation = operations.get(i);
         holder.title.setText(operation.title);
         holder.amount.setText(operation.amount);
         if (operation.isIncoming) {
